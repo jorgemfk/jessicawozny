@@ -11,3 +11,6 @@ def index(request):
 def add_member(request, member_name):
     Member.objects.create(name=member_name)
     return redirect('index')
+
+def catalogo(request):
+    return render(request, 'wozny/catalogo.html')

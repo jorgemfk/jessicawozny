@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from example import views
+from example.views import catalogo
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
     path("add/<str:member_name>/", views.add_member, name="add_member"),
+    path('catalogo/', catalogo, name='catalogo'),
 ]

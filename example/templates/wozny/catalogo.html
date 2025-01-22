@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Obras</title>
+    <link rel="stylesheet" href="{% static 'mi_app/css/catalogo.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Columna 1: Lista de Obras -->
+        <div class="columna lista-obras">
+            <div class="orden">
+                <button onclick="ordenar('cronologico')">Orden Cronológico</button>
+                <button onclick="ordenar('alfabetico')">Orden Alfabético</button>
+            </div>
+            <ul id="lista">
+                <!-- Se llenará dinámicamente con JavaScript -->
+            </ul>
+        </div>
+
+        <!-- Columna 2: Imagen de la Obra -->
+        <div class="columna imagen-obra">
+            <img id="imagen" src="{% static 'wozny/img/1.jpg' %}" alt="Obra seleccionada">
+        </div>
+
+        <!-- Columna 3: Ficha Técnica -->
+        <div class="columna ficha-tecnica">
+            <h2 id="titulo-obra">Título de la Obra</h2>
+            <p id="descripcion">Descripción de la obra...</p>
+            <p><strong>Año:</strong> <span id="anio"></span></p>
+            <p><strong>Técnica:</strong> <span id="tecnica"></span></p>
+        </div>
+    </div>
+
+    <script src="{% static 'mi_app/js/catalogo.js' %}"></script>
+</body>
+</html>

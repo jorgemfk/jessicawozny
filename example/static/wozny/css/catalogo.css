@@ -1,0 +1,76 @@
+body {
+    font-family: 'Georgia', serif;
+    background-color: #f5f5f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.columna {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+}
+
+/* Estilo de la lista */
+.lista-obras ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-obras li {
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lista-obras li:hover {
+    font-weight: bold;
+}
+
+/* Imagen central */
+.imagen-obra {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-obra img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+/* Ficha técnica */
+.ficha-tecnica {
+    font-size: 1rem;
+}
+
+.ficha-tecnica h2 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .columna {
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
