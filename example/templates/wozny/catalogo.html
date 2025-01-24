@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Obras</title>
-    <link rel="stylesheet" href="{% static 'css/catalogo.css' %}">
+    <link rel="stylesheet" href="{% static 'wozny/css/catalogo.css' %}">
 </head>
 <body>
-
+    {% include 'wozny/menu.html' %}
     <div class="container">
         <!-- Columna 1: Lista de Obras -->
         <div class="columna lista-obras">
-            <div class="orden">
-                <button onclick="ordenar('cronologico')">Orden Cronológico</button>
-                <button onclick="ordenar('alfabetico')">Orden Alfabético</button>
+            <div class="ordenamiento">
+                <span id="orden-alfabetico" class="activo" onclick="ordenar('alfabetico')">Alfabético</span> |
+                <span id="orden-cronologico" onclick="ordenar('cronologico')">Cronológico</span>
             </div>
             <ul id="lista">
                 <!-- Se llenará dinámicamente con JavaScript -->

@@ -1,9 +1,13 @@
 const obras = [
     { nombre: "Obra A", anio: 1995, imagen: "obra1.jpg", descripcion: "Descripción de Obra A", tecnica: "Óleo sobre lienzo" },
-    { nombre: "Obra B", anio: 2001, imagen: "obra2.jpg", descripcion: "Descripción de Obra B", tecnica: "Acrílico sobre madera" },
+    { nombre: "Obra B", anio: 2001, imagen: "1.png", descripcion: "Descripción de Obra B", tecnica: "Acrílico sobre madera" },
+    { nombre: "Zbra C", anio: 1995, imagen: "obra2.jpg", descripcion: "Descripción de Obra C", tecnica: "Acrílico sobre madera" },
 ];
 
 function cargarLista(orden) {
+    document.getElementById("orden-alfabetico").classList.toggle("activo", orden === 'alfabetico');
+    document.getElementById("orden-cronologico").classList.toggle("activo", orden === 'cronologico');
+
     const lista = document.getElementById("lista");
     lista.innerHTML = "";
     let obrasOrdenadas = [...obras];
@@ -38,6 +42,7 @@ function cargarLista(orden) {
                 lista.appendChild(letraTitulo);
                 indiceActual = letra;
             }
+            li.textContent += ' ('+obra.anio+')';
         }
 
         li.addEventListener("mouseover", () => li.style.fontWeight = "bold");
@@ -48,7 +53,7 @@ function cargarLista(orden) {
 }
 
 function mostrarObra(obra) {
-    document.getElementById("imagen").src = `/static/mi_app/imagenes/${obra.imagen}`;
+    document.getElementById("imagen").src = `/static/wozny/img/${obra.imagen}`;
     document.getElementById("titulo-obra").textContent = obra.nombre;
     document.getElementById("descripcion").textContent = obra.descripcion;
     document.getElementById("anio").textContent = obra.anio;

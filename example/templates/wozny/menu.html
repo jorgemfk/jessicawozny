@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessica Wozny</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #333;
+            color: white;
+            padding: 15px;
+        }
+        .menu-logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .menu-items {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-items li {
+            margin: 0 15px;
+            position: relative;
+        }
+        .menu-items a {
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+        }
+        .submenu-items {
+            display: none;
+            position: absolute;
+            background: #444;
+            list-style: none;
+            padding: 10px 0;
+            top: 100%;
+            left: 0;
+            min-width: 150px;
+        }
+        .submenu:hover .submenu-items {
+            display: block;
+        }
+        .submenu-items li {
+            padding: 8px 15px;
+        }
+        .submenu-items a {
+            color: white;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                background: #333;
+                width: 100%;
+            }
+            .menu-items.active {
+                display: flex;
+            }
+            .menu-items li {
+                text-align: center;
+                padding: 10px 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="menu">
+        <div class="menu-logo">Jessica Wozny</div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <ul class="menu-items">
+            <li><a href="/catalogo/">Catálogo de obra</a></li>
+            <li class="submenu">
+                <a href="#">Noticias</a>
+                <ul class="submenu-items">
+                    <li><a href="#">Exposiciones</a></li>
+                    <li><a href="#">Textos</a></li>
+                    <li><a href="#">Artículos</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Información</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector(".menu-items").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

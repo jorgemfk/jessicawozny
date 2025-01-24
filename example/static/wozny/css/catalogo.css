@@ -5,7 +5,20 @@ body {
     margin: 0;
     padding: 0;
 }
+.ordenamiento {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
 
+.ordenamiento span {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.ordenamiento .activo {
+    text-decoration: underline;
+    font-weight: bold;
+}
 .container {
     display: flex;
     height: 100vh;
