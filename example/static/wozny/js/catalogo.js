@@ -77,8 +77,8 @@ function cargarLista(orden) {
     let indiceActual = null;
     obrasOrdenadas.forEach(obra => {
         let li = document.createElement("li");
-        li.textContent = obra.nombre;
-
+        li.textContent = obra.nombre +' ('+obra.anio+')';
+        /*
         if (orden === "cronologico") {
             if (indiceActual !== obra.anio) {
                 let anioTitulo = document.createElement("li");
@@ -99,13 +99,15 @@ function cargarLista(orden) {
                 indiceActual = letra;
             }
             li.textContent += ' ('+obra.anio+')';
-        }
+        }*/
 
         li.addEventListener("mouseover", () => li.style.fontWeight = "bold");
         li.addEventListener("mouseout", () => li.style.fontWeight = "normal");
         li.addEventListener("click", () => mostrarObra(obra));
         lista.appendChild(li);
+
     });
+    mostrarObra(obrasOrdenadas[0]);
 }
 
 function mostrarObra(obra) {
@@ -115,7 +117,7 @@ function mostrarObra(obra) {
     document.getElementById("anio").textContent = obra.anio;
     document.getElementById("dimension").textContent = obra.dimension;
     document.querySelectorAll("lista-obras li").forEach(li => li.classList.remove("seleccionado"));
-    event.target.classList.add("seleccionado");
+    //event.target.classList.add("seleccionado");
 }
 
 function ordenar(criterio) {

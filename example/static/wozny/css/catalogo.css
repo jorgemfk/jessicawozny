@@ -1,9 +1,11 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, sans-serif, "Helvetica Roman", Icons;
+    font-family:"Diatype Variable", "Helvetica Neue", Helvetica, sans-serif, "Helvetica Roman", Icons;
     background-color: #ffffff;
     color: #333;
+    font-size: 0.7rem;
     margin: 0;
     padding: 0;
+    margin-top: 70px;
 }
 .ordenamiento {
     font-size: 16px;
@@ -55,7 +57,7 @@ body {
 
 /* Imagen central */
 .imagen-obra {
-    width: 45%;
+    width: 60%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -73,9 +75,9 @@ body {
     font-size: 1rem;
 }
 
-.ficha-tecnica h2 {
-    font-size: 1.5rem;
-    text-transform: uppercase;
+.ficha-tecnica-titulo {
+    font-family: "IBM Plex Mono", serif;
+    font-size: 1.2rem;
     border-bottom: 2px solid #333;
     padding-bottom: 5px;
 }
