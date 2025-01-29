@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: white;
+    color: black;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+/* Estilos del Menú */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(132, 132, 132, 0.8);
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    z-index: 1000;
+}
+
+.menu-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.menu-items {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-items li {
+    display: inline;
+}
+
+.menu-items a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.menu-gray {
+    color: gray;
+}
+
+/* Estilos del Título */
+.title-container {
+    text-align: center;
+    height: 25vh;
+    margin-top: 60px; /* Espacio para el menú */
+}
+
+.title {
+    font-size: 5vw;
+    opacity: 0;
+    position: relative;
+    transform: translateX(50%);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}

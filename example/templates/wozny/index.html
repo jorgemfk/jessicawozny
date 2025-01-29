@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessica Wozny</title>
+    <link rel="stylesheet" href="{% static 'wozny/css/index.css' %}">
+</head>
+<body>
+    <!-- Menú Superior -->
+    <nav class="menu">
+        <div class="menu-logo">&nbsp;</div>
+        <ul class="menu-items">
+            <li><a  id="catalogo" href="/catalogo/">Catálogo de obra</a></li>
+            <li><a href="#">Noticias</a></li>
+            <li><a href="#">Información</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Animación del Título -->
+    <div class="title-container">
+        <h1 class="title" id="title-jessica">Jessica</h1>
+        <h1 class="title" id="title-wozny">Wozny</h1>
+    </div>
+
+    <script src="{% static 'wozny/js/index.js' %}"></script>
+</body>
+</html>

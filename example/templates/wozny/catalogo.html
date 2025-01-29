@@ -10,6 +10,10 @@
 </head>
 <body>
     {% include 'wozny/menu.html' %}
+    <script>
+        window.onload = function() {
+    document.getElementById("catalogo").style.textDecoration = "underline";};
+    </script>
     <div class="container">
         <!-- Columna 1: Lista de Obras -->
         <div class="columna lista-obras">
@@ -29,7 +33,7 @@
 
         <!-- Columna 3: Ficha Técnica -->
         <div class="columna ficha-tecnica">
-            <p><span id="titulo-obra" class="ficha-tecnica-titulo">Título de la Obra</span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p>
+            <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo">Título de la Obra</span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
             <p id="descripcion">Descripción de la obra...</p>
             <p><!--strong>Dimensión:</strong--> <span id="dimension"  style="font-style: italic;"></span></p>
         </div>
