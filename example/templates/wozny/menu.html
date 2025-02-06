@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jessica Wozny</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'wozny/css/contacto.css' %}">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -94,7 +95,7 @@
         <div class="menu-logo">Jessica Wozny</div>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
         <ul class="menu-items">
-            <li><a  id="catalogo" href="/catalogo/">Catálogo de obra</a></li>
+            <li><a  id="catalogo" href="/catalogo/">Trabajo</a></li>
             <li class="submenu">
                 <a href="#">Noticias</a>
                 <ul class="submenu-items">
@@ -103,8 +104,13 @@
                     <li><a href="#">Artículos</a></li>
                 </ul>
             </li>
-            <li><a href="#">Información</a></li>
-            <li><a href="#">Contacto</a></li>
+            <li class="submenu"><a href="#">Información</a>
+                <ul class="submenu-items">
+                    <li><a href="#">Presentación</a></li>
+                    <li><a href="/curriculum/">Curriculum</a></li>
+                </ul>
+            </li>
+            <li><a href="#" onclick="openModal()">Contacto</a></li>
         </ul>
     </nav>
 
@@ -113,5 +119,12 @@
             document.querySelector(".menu-items").classList.toggle("active");
         }
     </script>
+    <div id="contacto-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            {% include 'wozny/contacto.html' %}
+        </div>
+    </div>
+    <script src="{% static 'wozny/js/contacto.js' %}"></script>
 </body>
 </html>

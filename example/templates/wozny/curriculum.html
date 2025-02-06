@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículum</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #222;
+            color: white;
+        }
+        main {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        h2 {
+            border-bottom: 2px solid #222;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    {% include 'wozny/menu.html' %}
+    <header>
+        <h1>Jessica Wozny</h1>
+        <p>Currículum</p>
+    </header>
+    <main>
+        <section id="exposiciones-individuales">
+            <h2>Exposiciones Individuales</h2>
+            <ul id="lista-individuales"></ul>
+        </section>
+        <section id="exposiciones-colectivas">
+            <h2>Exposiciones Colectivas</h2>
+            <ul id="lista-colectivas"></ul>
+        </section>
+        <section id="becas-premios">
+            <h2>Becas, Premios y Distinciones</h2>
+            <ul id="lista-becas"></ul>
+        </section>
+    </main>
+    <script>
+        const exposicionesIndividuales = [
+            { "año": 2024, "nombre_exposicion": "Necesidades. Ejercicio en seco.", "lugar": "Rabia", "estado": "Oaxaca", "pais": "México" },
+            { "año": 2023, "nombre_exposicion": "Paliativo. Ahora que estas en perfecto streamline.", "lugar": "Biblioteca Henestrosa/ Casa de la Ciudad", "estado": "Oaxaca", "pais": "México" },
+    {
+      "año": 2022,
+      "nombre_exposicion": "Sanatorio Plateau. Teeth-as-tools. Dann bergabmi Affenzahn.",
+      "lugar": "NONADA Gallery",
+      "estado": "Oaxaca",
+      "pais": "México"
+    },
+    {
+      "año": 2020,
+      "nombre_exposicion": "Ikat salvaje del telar domesticado.",
+      "lugar": "Fly on the Wall project space, dentro del festival Oaxaca Múltiple",
+      "estado": "Oaxaca",
+      "pais": "México"
+    }
+        ];
+        const exposicionesColectivas = [
+            { "año": 2024, "nombre_exposicion": "Room Gymnastics. Gimnasia de salón.", "lugar": "Casa Escuela", "estado": "Mérida", "pais": "México" },
+            ,
+    {
+      "año": 2024,
+      "nombre_exposicion": "Todos somos de fuera",
+      "lugar": "MACCO",
+      "estado": "Oaxaca",
+      "pais": "México"
+    },
+    {
+      "año": 2023,
+      "nombre_exposicion": "FAMA Monterrey",
+      "lugar": "Programa Carla",
+      "estado": "San Pedro Garza García, Monterrey",
+      "pais": "México"
+    },
+    {
+      "año": 2023,
+      "nombre_exposicion": "Globulo",
+      "lugar": "Los Pinos Centro Cultural",
+      "estado": "CDMX",
+      "pais": "México"
+    }
+        ];
+        const becasPremios = [
+            { "año": "2021/2024", "distincion": "Miembro del SNCA, Artes Visuales/ Medios alternativos", "pais": "México" }
+        ];
+        function cargarDatos(lista, elementoId) {
+            const ul = document.getElementById(elementoId);
+            lista.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.año} - ${item.nombre_exposicion || item.distincion}, ${item.lugar || ''} ${item.estado || ''}, ${item.pais}`;
+                ul.appendChild(li);
+            });
+        }
+        cargarDatos(exposicionesIndividuales, "lista-individuales");
+        cargarDatos(exposicionesColectivas, "lista-colectivas");
+        cargarDatos(becasPremios, "lista-becas");
+    </script>
+</body>
+</html>

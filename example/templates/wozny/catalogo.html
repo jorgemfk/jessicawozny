@@ -10,10 +10,7 @@
 </head>
 <body>
     {% include 'wozny/menu.html' %}
-    <script>
-        window.onload = function() {
-    document.getElementById("catalogo").style.textDecoration = "underline";};
-    </script>
+
     <div class="container">
         <!-- Columna 1: Lista de Obras -->
         <div class="columna lista-obras">
@@ -28,7 +25,7 @@
 
         <!-- Columna 2: Imagen de la Obra -->
         <div class="columna imagen-obra">
-            <img id="imagen" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
+            <img id="imagen" style="cursor: pointer;" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
         </div>
 
         <!-- Columna 3: Ficha Técnica -->
@@ -38,7 +35,67 @@
             <p><!--strong>Dimensión:</strong--> <span id="dimension"  style="font-style: italic;"></span></p>
         </div>
     </div>
-
+    <!-- Modal para imagen en pantalla completa -->
+    <div id="imageModal" class="imgmodal">
+        <span class="imgclose" onclick="closeImgModal()">&times;</span>
+        <img class="imgmodal-content" id="fullImage">
+        <div class="carousel">
+            <img class="thumbnail" src="{% static 'wozny/img/3.png' %}" onclick="changeImage(this.src)">
+        </div>
+    </div>
     <script src="{% static 'wozny/js/catalogo.js' %}"></script>
+    <script>
+
+        let currentIndex = 0;
+        const images = [
+            "{% static 'wozny/img/4.png' %}",
+            "{% static 'wozny/img/5.png' %}"
+        ];
+
+        document.getElementById("imagen").addEventListener("click", function () {
+            openImgModal(this.src);
+        });
+
+        function openImgModal(src) {
+            document.getElementById("imageModal").style.display = "flex";
+            document.getElementById("fullImage").src = src;
+            currentIndex = images.indexOf(src);
+        }
+
+        function closeImgModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        function changeImage(src) {
+            document.getElementById("fullImage").src = src;
+            currentIndex = images.indexOf(src);
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeModal();
+            } else if (event.key === "ArrowRight") {
+                nextImage();
+            } else if (event.key === "ArrowLeft") {
+                prevImage();
+            }
+        });
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            document.getElementById("fullImage").src = images[currentIndex];
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            document.getElementById("fullImage").src = images[currentIndex];
+        }
+    </script>
+    <script>
+        window.onload = function() {
+    document.getElementById("catalogo").style.textDecoration = "underline";
+    closeImgModal();
+    };
+    </script>
 </body>
 </html>
