@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Obras</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Lexend+Giga:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'wozny/css/catalogo.css' %}">
 </head>
 <body>
@@ -25,7 +24,7 @@
 
         <!-- Columna 2: Imagen de la Obra -->
         <div class="columna imagen-obra">
-            <img id="imagen" style="cursor: pointer;" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
+            <img id="imagen" style="cursor: pointer;" class="main-image" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
         </div>
 
         <!-- Columna 3: Ficha Técnica -->
@@ -33,68 +32,53 @@
             <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo">Título de la Obra</span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
             <p id="descripcion">Descripción de la obra...</p>
             <p><!--strong>Dimensión:</strong--> <span id="dimension"  style="font-style: italic;"></span></p>
+            <div class="thumbnails">
+               <img src="{% static 'wozny/img/4.png' %}" class="thumb" onclick="changeImage(1)">
+               <img src="{% static 'wozny/img/3.png' %}" class="thumb" onclick="changeImage(2)">
+            </div>
         </div>
+
     </div>
     <!-- Modal para imagen en pantalla completa -->
+    <!-- Modal para imagen grande -->
     <div id="imageModal" class="imgmodal">
         <span class="imgclose" onclick="closeImgModal()">&times;</span>
-        <img class="imgmodal-content" id="fullImage">
-        <div class="carousel">
-            <img class="thumbnail" src="{% static 'wozny/img/3.png' %}" onclick="changeImage(this.src)">
-        </div>
+        <img class="imgmodal-content" id="modalImage">
     </div>
+
     <script src="{% static 'wozny/js/catalogo.js' %}"></script>
     <script>
 
-        let currentIndex = 0;
         const images = [
+            "{% static 'wozny/img/1.png' %}",
             "{% static 'wozny/img/4.png' %}",
-            "{% static 'wozny/img/5.png' %}"
+        "{% static 'wozny/img/3.png' %}"
         ];
 
-        document.getElementById("imagen").addEventListener("click", function () {
-            openImgModal(this.src);
-        });
-
-        function openImgModal(src) {
-            document.getElementById("imageModal").style.display = "flex";
-            document.getElementById("fullImage").src = src;
-            currentIndex = images.indexOf(src);
+        function changeImage(index) {
+            document.getElementById("imagen").src = images[index];
         }
 
+        // Mostrar imagen en el modal
+        document.getElementById("imagen").addEventListener("click", function() {
+            document.getElementById("modalImage").src = this.src;
+            document.getElementById("imageModal").style.display = "flex";
+        });
+
+        // Cerrar el modal
         function closeImgModal() {
             document.getElementById("imageModal").style.display = "none";
         }
-
-        function changeImage(src) {
-            document.getElementById("fullImage").src = src;
-            currentIndex = images.indexOf(src);
-        }
-
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
-                closeModal();
-            } else if (event.key === "ArrowRight") {
-                nextImage();
-            } else if (event.key === "ArrowLeft") {
-                prevImage();
+                closeImgModal();
             }
         });
-
-        function nextImage() {
-            currentIndex = (currentIndex + 1) % images.length;
-            document.getElementById("fullImage").src = images[currentIndex];
-        }
-
-        function prevImage() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            document.getElementById("fullImage").src = images[currentIndex];
-        }
     </script>
     <script>
         window.onload = function() {
     document.getElementById("catalogo").style.textDecoration = "underline";
-    closeImgModal();
+    //closeImgModal();
     };
     </script>
 </body>

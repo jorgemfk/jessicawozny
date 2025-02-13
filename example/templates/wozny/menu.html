@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jessica Wozny</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Lexend+Giga:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'wozny/css/contacto.css' %}">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: "IBM Plex Mono", serif;
+            font-size: 0.7rem;
             margin: 0;
             padding: 0;
         }
@@ -23,9 +25,12 @@
             background: rgba(235, 235, 235, 0.8); /* Color negro semi-transparente */
             backdrop-filter: blur(5px);
         }
-        .menu-logo {
-            font-size: 24px;
+        .menu-logo a{
+            font-size: 22px;
             font-weight: bold;
+            text-decoration: none;
+            color: black;
+            font-family: 'Inter', sans-serif;
         }
         .menu-items {
             list-style: none;
@@ -34,13 +39,15 @@
             padding: 0;
         }
         .menu-items li {
-            margin: 0 15px;
+            margin: 0 10px;
             position: relative;
         }
         .menu-items a {
             color: black;
             text-decoration: none;
             font-weight: 400;
+            font-size: 15px;
+            font-family: "IBM Plex Mono", serif;
         }
         .submenu-items {
             display: none;
@@ -92,7 +99,7 @@
 </head>
 <body>
     <nav class="menu">
-        <div class="menu-logo">Jessica Wozny</div>
+        <div class="menu-logo"><a href="/">Jessica Wozny</a></div>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
         <ul class="menu-items">
             <li><a  id="catalogo" href="/catalogo/">Trabajo</a></li>
@@ -107,7 +114,7 @@
             <li class="submenu"><a href="#">Información</a>
                 <ul class="submenu-items">
                     <li><a href="#">Presentación</a></li>
-                    <li><a href="/curriculum/">Curriculum</a></li>
+                    <li><a href="/curriculum/">CV</a></li>
                 </ul>
             </li>
             <li><a href="#" onclick="openModal()">Contacto</a></li>
