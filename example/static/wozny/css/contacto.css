@@ -27,7 +27,9 @@
     padding: 20px;
     width: 50%;
     border-radius: 8px;
-    text-align: center;
+    text-align: start;
+    text-decoration: none;
+    color: black;
 }
 
 .close {

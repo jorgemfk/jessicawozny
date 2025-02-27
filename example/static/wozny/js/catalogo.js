@@ -116,8 +116,8 @@ function mostrarObra(obra) {
     document.getElementById("descripcion").textContent = obra.descripcion;
     document.getElementById("anio").textContent = obra.anio;
     document.getElementById("dimension").textContent = obra.dimension;
-    document.querySelectorAll("lista-obras li").forEach(li => li.classList.remove("seleccionado"));
-    //event.target.classList.add("seleccionado");
+    //document.querySelectorAll("lista-obras li").forEach(li => li.classList.remove("seleccionado"));
+    event.target.classList.add("seleccionado");
 }
 
 function ordenar(criterio) {

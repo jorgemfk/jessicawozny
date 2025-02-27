@@ -26,16 +26,15 @@
             text-align: start;
         }
         h2 {
-            border-bottom: 2px solid #333;
             padding-bottom: 5px;
             font-weight: normal;
             text-decoration: none;
         }
-        ul {
+        .cv ul {
             list-style: none;
             padding: 0;
         }
-        li {
+        .cv li {
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
@@ -48,15 +47,15 @@
         <p>Currículum</p>
     </header-->
     <main>
-        <section id="exposiciones-individuales">
+        <section id="exposiciones-individuales" class="cv">
             <h2>Exposiciones Individuales</h2>
             <ul id="lista-individuales"></ul>
         </section>
-        <section id="exposiciones-colectivas">
+        <section id="exposiciones-colectivas" class="cv">
             <h2>Exposiciones Colectivas</h2>
             <ul id="lista-colectivas"></ul>
         </section>
-        <section id="becas-premios">
+        <section id="becas-premios" class="cv">
             <h2>Becas, Premios y Distinciones</h2>
             <ul id="lista-becas"></ul>
         </section>
@@ -119,6 +118,11 @@
         cargarDatos(exposicionesIndividuales, "lista-individuales");
         cargarDatos(exposicionesColectivas, "lista-colectivas");
         cargarDatos(becasPremios, "lista-becas");
+    </script>
+    <script>
+        window.onload = function() {
+    document.getElementById("info").style.textDecoration = "underline";
+    };
     </script>
 </body>
 </html>
