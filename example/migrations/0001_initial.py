@@ -25,4 +25,27 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=100)),
             ],
         ),
+        migrations.CreateModel(
+            name='Exposicion',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('año', models.IntegerField()),
+                ('nombre_exposicion', models.CharField(max_length=255)),
+                ('lugar', models.CharField(max_length=255)),
+                ('estado', models.CharField(max_length=100)),
+                ('pais', models.CharField(max_length=100)),
+                ('curaduria', models.CharField(max_length=150, blank=True, null=True)),
+                ('tipo',
+                 models.CharField(choices=[('Colectiva', 'Colectiva'), ('Individual', 'Individual')], max_length=10)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='PremioDistincion',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('año', models.CharField(max_length=9)),
+                ('distincion', models.CharField(max_length=255)),
+                ('pais', models.CharField(max_length=100)),
+            ]
+        )
     ]

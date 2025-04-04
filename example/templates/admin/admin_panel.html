@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Panel de Administración</h2>
+
+<div>
+    <a href="{% url 'lista_exposiciones' %}">
+        <button>Administrar Exposiciones</button>
+    </a>
+
+    <a href="{% url 'lista_premios' %}">
+        <button>Administrar Premios y Distinciones</button>
+    </a>
+</div>
+
+{% endblock %}

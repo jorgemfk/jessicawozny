@@ -1,10 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from .forms import ContactForm
 from django.http import JsonResponse
 import ssl
 from django.views.decorators.csrf import csrf_exempt
+from .models import Exposicion
+from .forms import ExposicionForm
+from .models import PremioDistincion
+from .forms import PremioDistincionForm
 
 from .models import Member
 
@@ -49,3 +53,97 @@ def contacto(request):
             print(f"Error en la vista contacto: {e}")  # Ver error en la consola
             return JsonResponse({"error": "Error interno del servidor"}, status=500)
     return JsonResponse({"success": False, "error": "Error en el formulario."})
+
+
+
+def lista_exposiciones(request):
+    exposiciones = Exposicion.objects.all().order_by('tipo', '-año')
+    return render(request, 'exposiciones/lista.html', {'exposiciones': exposiciones})
+
+def agregar_exposicion(request):
+    if request.method == 'POST':
+        form = ExposicionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_exposiciones')
+    else:
+        form = ExposicionForm()
+    return render(request, 'exposiciones/form.html', {'form': form, 'titulo': 'Agregar Exposición'})
+
+def editar_exposicion(request, id):
+    exposicion = get_object_or_404(Exposicion, id=id)
+    if request.method == 'POST':
+        form = ExposicionForm(request.POST, instance=exposicion)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_exposiciones')
+    else:
+        form = ExposicionForm(instance=exposicion)
+    return render(request, 'exposiciones/form.html', {'form': form, 'titulo': 'Editar Exposición'})
+
+def eliminar_exposicion(request, id):
+    exposicion = get_object_or_404(Exposicion, id=id)
+    if request.method == 'POST':
+        exposicion.delete()
+        return redirect('lista_exposiciones')
+    return render(request, 'exposiciones/eliminar.html', {'exposicion': exposicion})
+
+def exposiciones_individuales(request):
+    exposiciones = Exposicion.objects.filter(tipo="Individual").values(
+        "año", "nombre_exposicion", "lugar", "estado", "pais"
+    )
+    return JsonResponse(list(exposiciones), safe=False)
+
+
+def exposiciones_json(request):
+    exposiciones_individuales = list(Exposicion.objects.filter(tipo="Individual").values(
+        "año", "nombre_exposicion", "lugar", "estado", "pais", "curaduria"
+    ))
+
+    exposiciones_colectivas = list(Exposicion.objects.filter(tipo="Colectiva").values(
+        "año", "nombre_exposicion", "lugar", "estado", "pais", "curaduria"
+    ))
+
+    premios = list(PremioDistincion.objects.all().order_by('-año').values(
+        'año', 'distincion', 'pais'
+    ))
+    return JsonResponse({
+        "individuales": exposiciones_individuales,
+        "colectivas": exposiciones_colectivas,
+        "premios": premios
+    })
+
+def lista_premios(request):
+    premios = PremioDistincion.objects.all().order_by('-año')
+    return render(request, 'premios/lista.html', {'premios': premios})
+
+def agregar_premio(request):
+    if request.method == 'POST':
+        form = PremioDistincionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_premios')
+    else:
+        form = PremioDistincionForm()
+    return render(request, 'premios/formulario.html', {'form': form})
+
+def editar_premio(request, premio_id):
+    premio = get_object_or_404(PremioDistincion, id=premio_id)
+    if request.method == 'POST':
+        form = PremioDistincionForm(request.POST, instance=premio)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_premios')
+    else:
+        form = PremioDistincionForm(instance=premio)
+    return render(request, 'premios/formulario.html', {'form': form})
+
+def eliminar_premio(request, premio_id):
+    premio = get_object_or_404(PremioDistincion, id=premio_id)
+    if request.method == 'POST':
+        premio.delete()
+        return redirect('lista_premios')
+    return render(request, 'premios/confirmar_eliminar.html', {'premio': premio})
+
+def admin_panel(request):
+    return render(request, 'admin/admin_panel.html')

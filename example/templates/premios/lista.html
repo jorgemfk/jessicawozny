@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Lista de Premios y Distinciones</h2>
+<a href="{% url 'agregar_premio' %}">Agregar Nuevo</a>
+<ul>
+    {% for premio in premios %}
+        <li>
+            {{ premio.año }} - {{ premio.distincion }} ({{ premio.pais }})
+            <a href="{% url 'editar_premio' premio.id %}">Editar</a>
+            <form action="{% url 'eliminar_premio' premio.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Eliminar</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

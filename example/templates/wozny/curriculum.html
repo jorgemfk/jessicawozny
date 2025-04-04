@@ -61,63 +61,38 @@
         </section>
     </main>
     <script>
-        const exposicionesIndividuales = [
-            { "año": 2024, "nombre_exposicion": "Necesidades. Ejercicio en seco.", "lugar": "Rabia", "estado": "Oaxaca", "pais": "México" },
-            { "año": 2023, "nombre_exposicion": "Paliativo. Ahora que estas en perfecto streamline.", "lugar": "Biblioteca Henestrosa/ Casa de la Ciudad", "estado": "Oaxaca", "pais": "México" },
-    {
-      "año": 2022,
-      "nombre_exposicion": "Sanatorio Plateau. Teeth-as-tools. Dann bergabmi Affenzahn.",
-      "lugar": "NONADA Gallery",
-      "estado": "Oaxaca",
-      "pais": "México"
-    },
-    {
-      "año": 2020,
-      "nombre_exposicion": "Ikat salvaje del telar domesticado.",
-      "lugar": "Fly on the Wall project space, dentro del festival Oaxaca Múltiple",
-      "estado": "Oaxaca",
-      "pais": "México"
-    }
-        ];
-        const exposicionesColectivas = [
-            { "año": 2024, "nombre_exposicion": "Room Gymnastics. Gimnasia de salón.", "lugar": "Casa Escuela", "estado": "Mérida", "pais": "México" },
-            ,
-    {
-      "año": 2024,
-      "nombre_exposicion": "Todos somos de fuera",
-      "lugar": "MACCO",
-      "estado": "Oaxaca",
-      "pais": "México"
-    },
-    {
-      "año": 2023,
-      "nombre_exposicion": "FAMA Monterrey",
-      "lugar": "Programa Carla",
-      "estado": "San Pedro Garza García, Monterrey",
-      "pais": "México"
-    },
-    {
-      "año": 2023,
-      "nombre_exposicion": "Globulo",
-      "lugar": "Los Pinos Centro Cultural",
-      "estado": "CDMX",
-      "pais": "México"
-    }
-        ];
-        const becasPremios = [
-            { "año": "2021/2024", "distincion": "Miembro del SNCA, Artes Visuales/ Medios alternativos", "pais": "México" }
-        ];
+        const exposicionesIndividuales = [];
+        const exposicionesColectivas = [];
+        const becasPremios = [];
         function cargarDatos(lista, elementoId) {
             const ul = document.getElementById(elementoId);
             lista.forEach(item => {
                 const li = document.createElement("li");
-                li.textContent = `${item.año} - ${item.nombre_exposicion || item.distincion}, ${item.lugar || ''} ${item.estado || ''}, ${item.pais}`;
+                const curaduriaText = item.curaduria ? `, Curaduría: ${item.curaduria}` : '';
+                li.textContent = `${item.año} - ${item.nombre_exposicion || item.distincion}, ${item.lugar || ''} ${item.estado || ''}, ${item.pais} ${curaduriaText}`;
                 ul.appendChild(li);
             });
         }
-        cargarDatos(exposicionesIndividuales, "lista-individuales");
-        cargarDatos(exposicionesColectivas, "lista-colectivas");
-        cargarDatos(becasPremios, "lista-becas");
+
+        document.addEventListener("DOMContentLoaded", function () {
+        fetch("/exposiciones-json/")
+            .then(response => response.json())
+            .then(data => {
+                // Llenar las listas con los datos obtenidos
+                exposicionesIndividuales.push(...data.individuales);
+                exposicionesColectivas.push(...data.colectivas);
+                becasPremios.push(...data.premios);
+
+                console.log("Exposiciones Individuales:", exposicionesIndividuales);
+                console.log("Exposiciones Colectivas:", exposicionesColectivas);
+
+                cargarDatos(exposicionesIndividuales, "lista-individuales");
+                cargarDatos(exposicionesColectivas, "lista-colectivas");
+                cargarDatos(becasPremios, "lista-becas");
+            })
+            .catch(error => console.error("Error al cargar exposiciones:", error));
+        });
+
     </script>
     <script>
         window.onload = function() {

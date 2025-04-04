@@ -19,7 +19,7 @@ from django.urls import path
 from example import views
 from example.views import catalogo, curriculum
 from example.views import contacto
-
+from example.views import lista_premios, agregar_premio, editar_premio, eliminar_premio, admin_panel
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
@@ -27,4 +27,15 @@ urlpatterns = [
     path('catalogo/', catalogo, name='catalogo'),
     path('curriculum/', curriculum, name='curriculum'),
     path("contacto/", contacto, name="contacto"),
+    path('exp/', views.lista_exposiciones, name='lista_exposiciones'),
+    path('exp/agregar/', views.agregar_exposicion, name='agregar_exposicion'),
+    path('exp/editar/<int:id>/', views.editar_exposicion, name='editar_exposicion'),
+    path('exp/eliminar/<int:id>/', views.eliminar_exposicion, name='eliminar_exposicion'),
+    path('exposiciones-individuales/', views.exposiciones_individuales, name='exposiciones_individuales'),
+    path('exposiciones-json/', views.exposiciones_json, name='exposiciones_json'),
+    path('dist/', lista_premios, name='lista_premios'),
+    path('dist/nuevo/', agregar_premio, name='agregar_premio'),
+    path('dist/editar/<int:premio_id>/', editar_premio, name='editar_premio'),
+    path('dist/eliminar/<int:premio_id>/', eliminar_premio, name='eliminar_premio'),
+    path('adm/', admin_panel, name='admin_panel'),
 ]
