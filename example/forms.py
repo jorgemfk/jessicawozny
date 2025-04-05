@@ -24,3 +24,8 @@ class PremioDistincionForm(forms.ModelForm):
     class Meta:
         model = PremioDistincion
         fields = ['año', 'distincion', 'pais']
+        widgets = {
+            'año': forms.TextInput(attrs={'class': 'form-control'}),
+            'distincion': forms.TextInput(attrs={'class': 'form-control'}),
+            'pais': forms.TextInput(attrs={'class': 'form-control'}),
+        }
