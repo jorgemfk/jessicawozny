@@ -19,7 +19,10 @@ from django.urls import path
 from example import views
 from example.views import catalogo, curriculum
 from example.views import contacto
-from example.views import lista_premios, agregar_premio, editar_premio, eliminar_premio, admin_panel
+from example.views import lista_premios, agregar_premio, editar_premio, eliminar_premio, admin_panel, subir_gif
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
@@ -38,4 +41,5 @@ urlpatterns = [
     path('dist/editar/<int:premio_id>/', editar_premio, name='editar_premio'),
     path('dist/eliminar/<int:premio_id>/', eliminar_premio, name='eliminar_premio'),
     path('adm/', admin_panel, name='admin_panel'),
-]
+    path('subir/', views.subir_gif, name='subir_gif'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -26,3 +26,11 @@ class PremioDistincion(models.Model):
 
     def __str__(self):
         return f"{self.año} - {self.distincion} ({self.pais})"
+
+class GifAnimacion(models.Model):
+    imagen = models.ImageField(upload_to='gifs/')
+    creado = models.DateTimeField(auto_now_add=True)
+
+class Gif(models.Model):
+    archivo = models.ImageField(upload_to='gifs/')
+    creado = models.DateTimeField(auto_now_add=True)

@@ -9,6 +9,8 @@ from .models import Exposicion
 from .forms import ExposicionForm
 from .models import PremioDistincion
 from .forms import PremioDistincionForm
+from .models import Gif
+from .forms import GifForm
 
 from .models import Member
 
@@ -16,7 +18,10 @@ def index(request):
     #members = Member.objects.all()
     #member_list_html = [f"<li>{member.name}</li>" for member in members]
     #return HttpResponse(f"<ul>{''.join(member_list_html)}</ul>")
-    return render(request, 'wozny/index.html')
+    print("ates")
+    gif = Gif.objects.last()  # Asume que solo hay uno o quieres mostrar el más reciente
+    print(gif)
+    return render(request, 'wozny/index.html', {'gif': gif})
 
 def add_member(request, member_name):
     Member.objects.create(name=member_name)
@@ -147,3 +152,17 @@ def eliminar_premio(request, premio_id):
 
 def admin_panel(request):
     return render(request, 'admin/admin_panel.html')
+
+from .forms import GifForm
+from .models import GifAnimacion
+
+def subir_gif(request):
+    if request.method == 'POST':
+        Gif.objects.all().delete()  # Elimina todos los anteriores si solo debe haber uno
+        form = GifForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')  # Regresa a mostrar_gif.html
+    else:
+        form = GifForm()
+    return render(request, 'admin/subir_portada.html', {'form': form})

@@ -1,6 +1,7 @@
 from django import forms
 from .models import Exposicion
 from .models import PremioDistincion
+from .models import Gif
 
 class ContactForm(forms.Form):
     email = forms.EmailField(label="Correo Electrónico", widget=forms.EmailInput(attrs={'class': 'input'}))
@@ -29,3 +30,8 @@ class PremioDistincionForm(forms.ModelForm):
             'distincion': forms.TextInput(attrs={'class': 'form-control'}),
             'pais': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class GifForm(forms.ModelForm):
+    class Meta:
+        model = Gif
+        fields = ['archivo']
