@@ -31,17 +31,16 @@
         <div class="columna ficha-tecnica">
             <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo">Título de la Obra</span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
             <p id="descripcion">Descripción de la obra...</p>
-            <p><!--strong>Dimensión:</strong--> <span id="dimension"  style="font-style: italic;"></span></p>
+            <p id="coleccion"></p>
+            <p><span id="dimension"  style="font-style: italic;"></span></p>
             <div class="thumbnails">
-               <img src="{% static 'wozny/img/4.png' %}" class="thumb" onclick="changeImage(1)">
-               <img src="{% static 'wozny/img/3.png' %}" class="thumb" onclick="changeImage(2)">
             </div>
         </div>
 
     </div>
     <!-- Modal para imagen en pantalla completa -->
     <!-- Modal para imagen grande -->
-    <div id="imageModal" class="imgmodal">
+    <div id="imageModal" class="imgmodal" onclick="closeImgModal()">
         <span class="imgclose" onclick="closeImgModal()">&times;</span>
         <img class="imgmodal-content" id="modalImage">
     </div>

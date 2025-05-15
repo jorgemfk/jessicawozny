@@ -40,24 +40,24 @@
         }
     </style>
 </head>
-<body>
+<body class="container">
     {% include 'wozny/menu.html' %}
     <!--header>
         <h1>Jessica Wozny</h1>
         <p>Currículum</p>
     </header-->
-    <main>
+    <main >
         <section id="exposiciones-individuales" class="cv">
             <h2>Exposiciones Individuales</h2>
-            <ul id="lista-individuales"></ul>
+            <ul id="lista-individuales" class="list-unstyled"></ul>
         </section>
         <section id="exposiciones-colectivas" class="cv">
             <h2>Exposiciones Colectivas</h2>
-            <ul id="lista-colectivas"></ul>
+            <ul id="lista-colectivas" class="list-unstyled"></ul>
         </section>
         <section id="becas-premios" class="cv">
             <h2>Becas, Premios y Distinciones</h2>
-            <ul id="lista-becas"></ul>
+            <ul id="lista-becas" class="list-unstyled"></ul>
         </section>
     </main>
     <script>
@@ -68,8 +68,20 @@
             const ul = document.getElementById(elementoId);
             lista.forEach(item => {
                 const li = document.createElement("li");
+                li.classList.add("d-flex");
+                //anio
+                const spanFecha = document.createElement("span");
+                spanFecha.classList.add("me-3");
+                spanFecha.style.minWidth = "100px";
+                spanFecha.textContent = item.año;
+                //
+                const spanTexto = document.createElement("span");
                 const curaduriaText = item.curaduria ? `, Curaduría: ${item.curaduria}` : '';
-                li.textContent = `${item.año} - ${item.nombre_exposicion || item.distincion}, ${item.lugar || ''} ${item.estado || ''}, ${item.pais} ${curaduriaText}`;
+                const estado = item.estado ? `${item.estado}, ` : '';
+                spanTexto.textContent = ` - ${item.nombre_exposicion || item.distincion}, ${item.lugar || ''} ${estado} ${item.pais} ${curaduriaText}`;
+
+                li.appendChild(spanFecha);
+                li.appendChild(spanTexto);
                 ul.appendChild(li);
             });
         }

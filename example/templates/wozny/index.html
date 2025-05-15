@@ -14,6 +14,7 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
+            background-color: #fcfafa;
         }
         .title-container {
             position: relative;
@@ -32,6 +33,16 @@
             height: 100vh;
             object-fit: cover;
         }
+
+         @media (max-width: 768px) {
+          .title-container img {
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: auto;
+            object-fit: cover;
+        }
+         }
     </style>
 </head>
 <body>

@@ -2,6 +2,7 @@ from django import forms
 from .models import Exposicion
 from .models import PremioDistincion
 from .models import Gif
+from .models import Trabajo
 
 class ContactForm(forms.Form):
     email = forms.EmailField(label="Correo Electrónico", widget=forms.EmailInput(attrs={'class': 'input'}))
@@ -35,3 +36,32 @@ class GifForm(forms.ModelForm):
     class Meta:
         model = Gif
         fields = ['archivo']
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+class TrabajoForm(forms.ModelForm):
+    imagenes = MultipleFileField(label='Select files', required=False)
+
+    class Meta:
+        model = Trabajo
+        fields = ['nombre', 'anio', 'descripcion', 'dimension','coleccion']
+        widgets = {
+            'anio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'dimension': forms.TextInput(attrs={'class': 'form-control'}),
+            'coleccion': forms.TextInput(attrs={'class': 'form-control'}),
+        }

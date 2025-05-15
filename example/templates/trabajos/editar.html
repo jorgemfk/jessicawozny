@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+ <style>
+        .thumb-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+        .thumb-img {
+            width: 80px;
+            height: auto;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    </style>
+<body class="container py-4">
+    <h2>Editar Trabajo</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label>Agregar nuevas imágenes:</label>
+        {{ form.imagenes }}
+        <br><br>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'lista_trabajos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+    <hr>
+    <h4>Imágenes actuales</h4>
+    <div id="thumbs-container">
+        {% for imagen in imagenes %}
+            <div class="thumb-wrapper" data-path="{{ imagen }}">
+                <img src="{{ imagen }}" class="thumb-img">
+                <button class="delete-btn" onclick="eliminarImagen('{{ imagen }}')">×</button>
+            </div>
+        {% empty %}
+            <p>No hay imágenes.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function eliminarImagen(path) {
+            if (confirm("¿Eliminar esta imagen?")) {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                fetch("{% url 'eliminar_imagen' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: new URLSearchParams({ 'path': path })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        document.querySelector(`[data-path="${path}"]`).remove();
+                    } else {
+                        alert("Error al eliminar.");
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

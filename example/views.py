@@ -10,15 +10,112 @@ from .forms import ExposicionForm
 from .models import PremioDistincion
 from .forms import PremioDistincionForm
 from .models import Gif
+from .models import Member
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Trabajo
+from .forms import TrabajoForm
+from PIL import Image
+import os
+from django.conf import settings
 from .forms import GifForm
 
-from .models import Member
+# Vista para listar todos los trabajos
+def lista_trabajos(request):
+    trabajos = Trabajo.objects.all()
+    return render(request, 'trabajos/lista.html', {'trabajos': trabajos})
+
+# Vista para crear un nuevo trabajo
+def crear_trabajo(request):
+    if request.method == 'POST':
+        form = TrabajoForm(request.POST, request.FILES)
+        if form.is_valid():
+            trabajo = form.save()
+
+            files = request.FILES.getlist('imagenes')
+            for i, file in enumerate(files):
+                numero = i + 1
+                base_path = f"{trabajo.id}/{trabajo.id}_{numero}_"
+
+                # Crear carpeta si no existe
+                output_dir = os.path.join(settings.MEDIA_ROOT, str(trabajo.id))
+                os.makedirs(output_dir, exist_ok=True)
+
+                # Imagen principal (1600px)
+                img = Image.open(file)
+                img = img.convert('RGBA') if file.name.endswith('.png') else img.convert('RGB')
+                img.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+                main_filename = f"{base_path}1.png"
+                main_path = os.path.join(settings.MEDIA_ROOT, main_filename)
+                img.save(main_path, 'PNG')
+
+                # Imagen reducida (40px)
+                img.thumbnail((40, 40), Image.Resampling.LANCZOS)
+                thumb_filename = f"{base_path}2.png"
+                thumb_path = os.path.join(settings.MEDIA_ROOT, thumb_filename)
+                img.save(thumb_path, 'PNG')
+
+            return redirect('lista_trabajos')
+    else:
+        form = TrabajoForm()
+    return render(request, 'trabajos/crear.html', {'form': form})
+
+# Vista para editar un trabajo existente
+def editar_trabajo(request, pk):
+    trabajo = get_object_or_404(Trabajo, pk=pk)
+    if request.method == 'POST':
+        form = TrabajoForm(request.POST, request.FILES, instance=trabajo)
+        if form.is_valid():
+            form.save()
+            files = request.FILES.getlist('imagenes')
+            existing_count = len([f for f in os.listdir(os.path.join(settings.MEDIA_ROOT, str(trabajo.id))) if f.endswith('_1.png')])
+            for i, file in enumerate(files):
+                numero = existing_count + i + 1
+                base_path = f"{trabajo.id}/{trabajo.id}_{numero}_"
+                output_dir = os.path.join(settings.MEDIA_ROOT, str(trabajo.id))
+                os.makedirs(output_dir, exist_ok=True)
+                img = Image.open(file)
+                img = img.convert('RGBA') if file.name.endswith('.png') else img.convert('RGB')
+                img.thumbnail((1600, 1600), Image.LANCZOS)
+                main_filename = f"{base_path}1.png"
+                main_path = os.path.join(settings.MEDIA_ROOT, main_filename)
+                img.save(main_path, 'PNG')
+                img.thumbnail((40, 40), Image.LANCZOS)
+                thumb_filename = f"{base_path}2.png"
+                thumb_path = os.path.join(settings.MEDIA_ROOT, thumb_filename)
+                img.save(thumb_path, 'PNG')
+            return redirect('lista_trabajos')
+    else:
+        form = TrabajoForm(instance=trabajo)
+
+    imagenes_dir = os.path.join(settings.MEDIA_ROOT, str(trabajo.id))
+    imagenes = []
+    if os.path.exists(imagenes_dir):
+        imagenes = [f"/media/{trabajo.id}/{f}" for f in os.listdir(imagenes_dir) if f.endswith('_2.png')]
+
+    return render(request, 'trabajos/editar.html', {'form': form, 'trabajo': trabajo, 'imagenes': imagenes})
+# API para eliminar imagen individual
+def eliminar_imagen(request):
+    if request.method == 'POST':
+        image_path = request.POST.get('path')
+        if image_path:
+            main_path = image_path.replace('_2.png', '_1.png').replace('/media/', settings.MEDIA_ROOT + '/')
+            thumb_path = image_path.replace('/media/', settings.MEDIA_ROOT + '/')
+            if os.path.exists(main_path):
+                os.remove(main_path)
+            if os.path.exists(thumb_path):
+                os.remove(thumb_path)
+            return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'error'}, status=400)
+
+# Vista para eliminar un trabajo
+def eliminar_trabajo(request, pk):
+    trabajo = get_object_or_404(Trabajo, pk=pk)
+    if request.method == 'POST':
+        trabajo.delete()
+        return redirect('lista_trabajos')
+    return render(request, 'trabajos/eliminar.html', {'trabajo': trabajo})
 
 def index(request):
-    #members = Member.objects.all()
-    #member_list_html = [f"<li>{member.name}</li>" for member in members]
-    #return HttpResponse(f"<ul>{''.join(member_list_html)}</ul>")
-    print("ates")
     gif = Gif.objects.last()  # Asume que solo hay uno o quieres mostrar el más reciente
     print(gif)
     return render(request, 'wozny/index.html', {'gif': gif})
@@ -118,6 +215,28 @@ def exposiciones_json(request):
         "premios": premios
     })
 
+def trabajos_json(request):
+    trabajos = list(Trabajo.objects.all().order_by('-anio').values(
+        'id', 'nombre', 'anio', 'descripcion', 'dimension', 'coleccion'
+    ))
+    return JsonResponse({
+        "trabajos": trabajos
+    })
+
+def imagenes_tumb_json(request, trabajo_id):
+    carpeta = os.path.join(settings.MEDIA_ROOT, str(trabajo_id))
+    if not os.path.exists(carpeta):
+        return JsonResponse({'imagenes': []})
+
+    archivos = os.listdir(carpeta)
+    imagenes = []
+    for archivo in archivos:
+        if archivo.endswith('_2.png'):
+            url = f"{settings.MEDIA_URL}{trabajo_id}/{archivo}"
+            imagenes.append(url)
+
+    return JsonResponse({'imagenes': imagenes})
+
 def lista_premios(request):
     premios = PremioDistincion.objects.all().order_by('-año')
     return render(request, 'premios/lista.html', {'premios': premios})
@@ -152,9 +271,6 @@ def eliminar_premio(request, premio_id):
 
 def admin_panel(request):
     return render(request, 'admin/admin_panel.html')
-
-from .forms import GifForm
-from .models import GifAnimacion
 
 def subir_gif(request):
     if request.method == 'POST':

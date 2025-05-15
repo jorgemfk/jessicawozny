@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Lista de Trabajos</h2>
+  <a href="{% url 'crear_trabajo' %}" class="btn btn-success mb-3">+ Nuevo Trabajo</a>
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Año</th>
+        <th>Descripción</th>
+        <th>Dimensión</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trabajo in trabajos %}
+      <tr>
+        <td>{{ trabajo.nombre }}</td>
+        <td>{{ trabajo.anio }}</td>
+        <td>{{ trabajo.descripcion|truncatewords:10 }}</td>
+        <td>{{ trabajo.dimension }}</td>
+        <td>
+          <a href="{% url 'editar_trabajo' trabajo.id %}" class="btn btn-sm btn-warning">Editar</a>
+          <a href="{% url 'eliminar_trabajo' trabajo.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

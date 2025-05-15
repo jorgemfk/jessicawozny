@@ -47,5 +47,17 @@ class Migration(migrations.Migration):
                 ('distincion', models.CharField(max_length=255)),
                 ('pais', models.CharField(max_length=100)),
             ]
-        )
+        ),
+        migrations.CreateModel(
+            name='Trabajo',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nombre', models.CharField(max_length=300)),
+                ('anio', models.PositiveIntegerField()),
+                ('descripcion', models.TextField()),
+                ('dimension', models.CharField(max_length=100)),
+                ('coleccion', models.CharField(max_length=200, blank=True, null=True)),
+
+            ],
+        ),
     ]

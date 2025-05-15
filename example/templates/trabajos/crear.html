@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Crear Trabajo</h2>
+  <form method="post" enctype="multipart/form-data" class="needs-validation mt-3" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+    {{ form.as_p }}
+    </div>
+    <!--label for="id_imagenes">Imágenes:</label-->
+    <input type="hidden" name="imagenes" id="id_imagenes" multiple class="form-control mb-3">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'lista_trabajos' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
