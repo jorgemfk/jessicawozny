@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Statement</title>
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container mt-5">
+  {% include 'wozny/menu.html' %}
+  <style>
+  .statement-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    flex-wrap: nowrap;
+  }
+
+  .statement-image {
+    width: 30%;
+  }
+
+  .statement-text {
+    width: 70%;
+  }
+
+  .statement-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 0px solid #ccc;
+  }
+
+  @media (max-width: 767.98px) {
+    .statement-container {
+      flex-direction: column;
+    }
+
+    .statement-image,
+    .statement-text {
+      width: 100%;
+    }
+
+    .statement-text {
+      order: 1;
+    }
+
+    .statement-image {
+      order: 2;
+    }
+  }
+</style>
+
+<div class="container">
+
+  <div class="statement-container">
+    <div class="statement-image">
+      {% if statement.imagen %}
+        <img src="{{ statement.imagen.url }}" alt="Imagen de perfil">
+      {% endif %}
+    </div>
+    <div class="statement-text">
+      <p>{{ statement.texto|linebreaks }}</p>
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+</html>
+

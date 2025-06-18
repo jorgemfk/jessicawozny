@@ -60,4 +60,30 @@ class Migration(migrations.Migration):
 
             ],
         ),
+        migrations.CreateModel(
+            name='AcercaDe',
+            fields=[
+                ('id', models.AutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID'
+                )),
+                ('acerca', models.TextField()),
+                ('otros_proyectos', models.TextField()),
+                ('actualizado', models.DateTimeField(auto_now=True)),
+            ],
+            options={
+                'verbose_name': 'Información CV',
+                'verbose_name_plural': 'Información CV',
+            },
+        ),
+        migrations.CreateModel(
+            name='Statement',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('texto', models.TextField()),
+                ('imagen', models.ImageField(blank=True, null=True, upload_to='statement/')),
+            ],
+        ),
     ]

@@ -1,5 +1,13 @@
 from django.db import models
 
+
+class Statement(models.Model):
+    texto = models.TextField()
+    imagen = models.ImageField(upload_to='statement/', blank=True, null=True)
+
+    def __str__(self):
+        return "Statement del artista"
+
 class Member(models.Model):
     name = models.CharField(max_length=100)
 
@@ -45,3 +53,11 @@ class Trabajo(models.Model):
     coleccion = models.CharField(max_length=200, blank=True, null=True)
     def __str__(self):
         return self.nombre
+
+class AcercaDe(models.Model):
+    acerca = models.TextField()
+    otros_proyectos = models.TextField()
+    actualizado = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Información CV"

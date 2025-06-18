@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load static %}
+{% load form_extras %}
+<div class="container py-5">
+  <h2 class="mb-4">Editar Semblanza</h2>
+  <form method="post" enctype="multipart/form-data" class="border p-4 rounded bg-light">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_texto" class="form-label">Texto del Statement</label>
+
+      {{ form.texto|as_widget:"{'class': 'form-control', 'rows': 10}" }}
+    </div>
+    <div class="mb-3">
+      <label for="id_imagen" class="form-label">Imagen del artista (opcional)</label>
+      {{ form.imagen }}
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'ver_statement' %}" class="btn btn-secondary ms-2">Cancelar</a>
+  </form>
+</div>
+
+{% endblock %}

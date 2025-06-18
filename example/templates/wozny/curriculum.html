@@ -7,7 +7,8 @@
     <title>Currículum</title>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 300;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -27,8 +28,14 @@
         }
         h2 {
             padding-bottom: 5px;
-            font-weight: normal;
+            font-weight: 300;
             text-decoration: none;
+        }
+        .acer {
+            padding-bottom: 5px;
+            font-weight: 300;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
         .cv ul {
             list-style: none;
@@ -46,7 +53,17 @@
         <h1>Jessica Wozny</h1>
         <p>Currículum</p>
     </header-->
+<div id="spinner" class="d-flex justify-content-center align-items-center position-fixed"
+     style="top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(255, 255, 255, 0.4); z-index: 1050;">
+  <div class="spinner-border text-light" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+
     <main >
+        <section  class="acer">
+            <div id="contenido-acercade" class="container mt-4 acer"></div>
+        </section>
         <section id="exposiciones-individuales" class="cv">
             <h2>Exposiciones Individuales</h2>
             <ul id="lista-individuales" class="list-unstyled"></ul>
@@ -59,34 +76,87 @@
             <h2>Becas, Premios y Distinciones</h2>
             <ul id="lista-becas" class="list-unstyled"></ul>
         </section>
+        <section  class="acer">
+            <div id="fut" class="container mt-4 acer"></div>
+        </section>
     </main>
     <script>
+            // Función para detectar URLs y convertirlas en <a>
+function convertirURLsEnLinks(texto) {
+    const urlRegex = /(\bhttps?:\/\/[^\s]+)/g;
+    return texto.replace(urlRegex, function(url) {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    });
+}
+
+// Función para cargar el contenido dinámicamente
+async function cargarAcercaDe() {
+    try {
+        const response = await fetch('/api/acercade/');
+        if (!response.ok) throw new Error('Error al cargar datos');
+        const data = await response.json();
+        const spinner = document.getElementById("spinner");
+        spinner.style.display = "none";
+        const acercaHTML = convertirURLsEnLinks(data.acerca).replace(/\n/g, '<br>');
+        const otrosHTML = convertirURLsEnLinks(data.otros_proyectos).replace(/\n/g, '<br>');
+
+        container = document.getElementById('contenido-acercade');
+
+        container.innerHTML = `
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white"></div>
+                <div class="card-body acer">${acercaHTML}</div>
+            </div>
+        `;
+        container = document.getElementById('fut');
+        container.innerHTML = `
+
+            <div class="card">
+                <div class="card-header bg-secondary text-white"></div>
+                <div class="card-body acer">${otrosHTML}</div>
+            </div>
+        `;
+    } catch (error) {
+        console.error(error);
+        document.getElementById('contenido-acercade').innerHTML = '<p class="text-danger">No se pudo cargar la información.</p>';
+    }
+}
         const exposicionesIndividuales = [];
         const exposicionesColectivas = [];
         const becasPremios = [];
         function cargarDatos(lista, elementoId) {
             const ul = document.getElementById(elementoId);
-            lista.forEach(item => {
-                const li = document.createElement("li");
-                li.classList.add("d-flex");
-                //anio
-                const spanFecha = document.createElement("span");
-                spanFecha.classList.add("me-3");
-                spanFecha.style.minWidth = "100px";
-                spanFecha.textContent = item.año;
-                //
-                const spanTexto = document.createElement("span");
-                const curaduriaText = item.curaduria ? `, Curaduría: ${item.curaduria}` : '';
-                const estado = item.estado ? `${item.estado}, ` : '';
-                spanTexto.textContent = ` - ${item.nombre_exposicion || item.distincion}, ${item.lugar || ''} ${estado} ${item.pais} ${curaduriaText}`;
+    // Ordenar por año descendente
+    const listaOrdenada = [...lista].sort((a, b) => b.año - a.año);
 
-                li.appendChild(spanFecha);
-                li.appendChild(spanTexto);
-                ul.appendChild(li);
-            });
+    let añoActual = null;
+
+    listaOrdenada.forEach(item => {
+        // Si cambia el año, crear encabezado
+        if (item.año !== añoActual) {
+            añoActual = item.año;
+            const liAño = document.createElement("li");
+            const strong = document.createElement("strong");
+            strong.textContent = añoActual;
+            liAño.appendChild(strong);
+            ul.appendChild(liAño);
+        }
+
+        const li = document.createElement("li");
+        li.style.marginLeft = "1em";
+
+        const curaduriaText = item.curaduria ? `, curaduría: ${item.curaduria}` : '';
+        const estado = item.estado ? `${item.estado}, ` : '';
+        const lugar = item.lugar ? `${item.lugar}, ` : '';
+        li.textContent = `${item.nombre_exposicion || item.distincion}, ${lugar}${estado}${item.pais}${curaduriaText}`;
+        ul.appendChild(li);
+        });
         }
 
         document.addEventListener("DOMContentLoaded", function () {
+        const spinner = document.getElementById("spinner");
+        // Mostrar spinner
+        spinner.style.display = "flex";
         fetch("/exposiciones-json/")
             .then(response => response.json())
             .then(data => {
@@ -101,9 +171,14 @@
                 cargarDatos(exposicionesIndividuales, "lista-individuales");
                 cargarDatos(exposicionesColectivas, "lista-colectivas");
                 cargarDatos(becasPremios, "lista-becas");
+                cargarAcercaDe();
+
             })
             .catch(error => console.error("Error al cargar exposiciones:", error));
+
         });
+
+
 
     </script>
     <script>

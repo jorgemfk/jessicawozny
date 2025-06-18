@@ -3,6 +3,21 @@ from .models import Exposicion
 from .models import PremioDistincion
 from .models import Gif
 from .models import Trabajo
+from .models import AcercaDe, Statement
+
+class StatementForm(forms.ModelForm):
+    class Meta:
+        model = Statement
+        fields = ['texto', 'imagen']
+
+class AcercaDeForm(forms.ModelForm):
+    class Meta:
+        model = AcercaDe
+        fields = ['acerca', 'otros_proyectos']
+        widgets = {
+            'acerca': forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
+            'otros_proyectos': forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
+        }
 
 class ContactForm(forms.Form):
     email = forms.EmailField(label="Correo Electrónico", widget=forms.EmailInput(attrs={'class': 'input'}))

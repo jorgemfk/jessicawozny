@@ -18,6 +18,52 @@ from PIL import Image
 import os
 from django.conf import settings
 from .forms import GifForm
+from .models import AcercaDe, Statement
+from .forms import AcercaDeForm, StatementForm
+
+def editar_statement(request):
+    statement = Statement.objects.last()
+    if request.method == 'POST':
+        form = StatementForm(request.POST, request.FILES, instance=statement)
+        if form.is_valid():
+            form.save()
+            return redirect('ver_statement')
+    else:
+        form = StatementForm(instance=statement)
+    return render(request, 'admin/edit_statement.html', {'form': form})
+
+# Vista para mostrar el Statement
+
+def ver_statement(request):
+    statement = Statement.objects.last()
+    return render(request, 'wozny/statement.html', {'statement': statement})
+
+def obtener_acercade_json(request):
+    try:
+        ultimo = AcercaDe.objects.latest('actualizado')
+        data = {
+            'acerca': ultimo.acerca,
+            'otros_proyectos': ultimo.otros_proyectos,
+        }
+    except AcercaDe.DoesNotExist:
+        data = {
+            'acerca': '',
+            'otros_proyectos': '',
+        }
+    return JsonResponse(data)
+
+def editar_acerca_de(request):
+    instancia, creado = AcercaDe.objects.get_or_create(id=1)
+
+    if request.method == 'POST':
+        form = AcercaDeForm(request.POST, instance=instancia)
+        if form.is_valid():
+            form.save()
+            return redirect('editar_acerca_de')
+    else:
+        form = AcercaDeForm(instance=instancia)
+
+    return render(request, 'exposiciones/acercade.html', {'form': form})
 
 # Vista para listar todos los trabajos
 def lista_trabajos(request):
