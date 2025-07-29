@@ -50,44 +50,80 @@ function cargarLista(orden) {
     mostrarObra(obrasOrdenadas[0]);
 }
 
+function cargarFicha(obra) {
+    // Actualizar ficha técnica
+   const ficha = document.getElementById("ficha-tecnica");
+   ficha.textContent = `${obra.nombre || ''}, ${obra.anio || ''}, ${obra.descripcion || ''}, ${obra.dimension || ''}`;
+
+}
 function mostrarObra(obra) {
-    document.getElementById("imagen").src = `/media/${obra.id}/${obra.id}_1_1.png`;
+    const imagenPrincipal = document.getElementById("imagen");
+    const thumbnailsContainer = document.querySelector('.thumbnails');
+
     document.getElementById("titulo-obra").textContent = obra.nombre;
     document.getElementById("descripcion").textContent = obra.descripcion;
-    document.getElementById("coleccion").textContent = obra.coleccion;
     document.getElementById("anio").textContent = obra.anio;
     document.getElementById("dimension").textContent = obra.dimension;
-    const trabajoId = obra.id;
-    const thumbnailsContainer = document.querySelector('.thumbnails');
-    const imagenPrincipal = document.getElementById('imagen');
-    thumbnailsContainer.innerHTML = '';
-    // Cargar thumbnails desde el endpoint JSON
-    fetch(`/cata/${trabajoId}/imagenes-tumb-json/`)
-        .then(response => response.json())
-        .then(data => {
-            data.imagenes.forEach(url => {
-                const img = document.createElement('img');
-                img.src = url;
-                img.className = 'thumb';
-                img.style.width = '40px';
-                img.style.cursor = 'pointer';
-                img.onclick = () => {
-                    // Cambia _2.png por _1.png para cargar la imagen ampliada
-                    const ampliada = url.replace('_2.png', '_1.png');
-                    imagenPrincipal.src = ampliada;
-                };
-                thumbnailsContainer.appendChild(img);
-            });
+    document.getElementById("coleccion").textContent = obra.coleccion || '';
 
-            // Opcional: mostrar la primera imagen como ampliada por defecto
-            if (data.imagenes.length > 0) {
-                imagenPrincipal.src = data.imagenes[0].replace('_2.png', '_1.png');
-            }
-        })
-        .catch(error => console.error('Error cargando imágenes:', error));
-    //document.querySelectorAll("lista-obras li").forEach(li => li.classList.remove("seleccionado"));
+    thumbnailsContainer.innerHTML = '';
+
+    if (obra.tipo === 0) {
+        // Es un trabajo individual
+        imagenPrincipal.src = `/media/${obra.id}/${obra.id}_1_1.png`;
+        fetch(`/cata/${obra.id}/imagenes-tumb-json/`)
+            .then(response => response.json())
+            .then(data => {
+                data.imagenes.forEach(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'thumb';
+                    img.style.width = '40px';
+                    img.style.cursor = 'pointer';
+                    img.onclick = () => {
+                        imagenPrincipal.src = url.replace('_2.png', '_1.png');
+
+                    };
+                    thumbnailsContainer.appendChild(img);
+                });
+                if (data.imagenes.length > 0) {
+                    imagenPrincipal.src = data.imagenes[0].replace('_2.png', '_1.png');
+                }
+            })
+            .catch(error => console.error('Error cargando imágenes:', error));
+
+    } else if (obra.tipo === 1 && obra.trabajos.length > 0) {
+        // Es una serie, usamos el primer trabajo
+        const primerTrabajo = obra.trabajos[0];
+        imagenPrincipal.src = `/media/${primerTrabajo.id}/${primerTrabajo.id}_1_1.png`;
+
+        // Cargar thumbnails de todos los trabajos de la serie
+        obra.trabajos.forEach(trabajo => {
+            fetch(`/cata/${trabajo.id}/imagenes-tumb-json/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.imagenes.forEach(url => {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.className = 'thumb';
+                        img.style.width = '40px';
+                        img.style.cursor = 'pointer';
+                        img.onclick = () => {
+                            imagenPrincipal.src = url.replace('_2.png', '_1.png');
+                            cargarFicha(trabajo);
+                        };
+                        thumbnailsContainer.appendChild(img);
+                    });
+                })
+                .catch(error => console.error('Error cargando imágenes de trabajo en serie:', error));
+        });
+    }
+
+    // Marcar seleccionado
+    //document.querySelectorAll(".lista-obras li").forEach(li => li.classList.remove("seleccionado"));
     event.target.classList.add("seleccionado");
 }
+
 
 function ordenar(criterio) {
     cargarLista(criterio);
@@ -98,10 +134,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 // Llenar las listas con los datos obtenidos
-                obras.push(...data.trabajos);
+                obras.push(...data.items);
 
                 console.log("trabajos:", obras);
+                const spinner = document.getElementById("spinner");
+                spinner.style.display = "none";
                 cargarLista("cronologico");
+
             })
             .catch(error => console.error("Error al cargar trabajos:", error));
         });

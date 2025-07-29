@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Editar Serie: {{ serie.nombre }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.nombre.label_tag }}
+      {{ form.nombre }}
+    </div>
+    <div class="mb-3">
+      {{ form.anio.label_tag }}
+      {{ form.anio }}
+    </div>
+    <div class="mb-3">
+      {{ form.descripcion.label_tag }}
+      {{ form.descripcion }}
+    </div>
+    <div class="mb-3">
+      {{ form.dimension.label_tag }}
+      {{ form.dimension }}
+    </div>
+    <div class="mb-3">
+      {{ form.trabajos.label_tag }}
+      {{ form.trabajos }}
+    </div>
+    <button type="submit" class="btn btn-success">Actualizar</button>
+    <a href="{% url 'lista_series' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

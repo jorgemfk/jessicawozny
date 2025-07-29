@@ -45,11 +45,21 @@ class Gif(models.Model):
 
 # MODELO Trabajo
 
-class Trabajo(models.Model):
+class Serie(models.Model):
     nombre = models.CharField(max_length=200)
-    anio = models.PositiveIntegerField()
-    descripcion = models.TextField()
-    dimension = models.CharField(max_length=100)
+    anio = models.PositiveIntegerField(blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
+    dimension = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
+
+class Trabajo(models.Model):
+    serie = models.ForeignKey(Serie, on_delete=models.SET_NULL, null=True, blank=True, related_name='trabajos')
+    nombre = models.CharField(max_length=200)
+    anio = models.PositiveIntegerField( blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
+    dimension = models.CharField(max_length=100, blank=True, null=True)
     coleccion = models.CharField(max_length=200, blank=True, null=True)
     def __str__(self):
         return self.nombre

@@ -11,6 +11,13 @@
     {% include 'wozny/menu.html' %}
 
     <div class="container">
+    <div id="spinner" class="d-flex justify-content-center align-items-center position-fixed"
+     style="top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(255, 255, 255, 0.4); z-index: 1050;">
+  <div class="spinner-border text-light" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+
         <!-- Columna 1: Lista de Obras -->
         <div class="columna lista-obras">
             <div class="ordenamiento">
@@ -25,12 +32,17 @@
         <!-- Columna 2: Imagen de la Obra -->
         <div class="columna imagen-obra">
             <img id="imagen" style="cursor: pointer;" class="main-image" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
+                <p id="ficha-tecnica" style="
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        font-size: 0.7rem;">
+        </p>
         </div>
 
         <!-- Columna 3: Ficha Técnica -->
         <div class="columna ficha-tecnica">
-            <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo">Título de la Obra</span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
-            <p id="descripcion">Descripción de la obra...</p>
+            <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo"></span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
+            <p id="descripcion"></p>
             <p id="coleccion"></p>
             <p><span id="dimension"  style="font-style: italic;"></span></p>
             <div class="thumbnails">

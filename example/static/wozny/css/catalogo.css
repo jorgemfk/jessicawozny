@@ -61,9 +61,10 @@ body {
 .imagen-obra {
     width: 60%;
     display: flex;
-    align-items: start;
-    justify-content: center;
-    text-align:center;
+    flex-direction: column; /* <- Esto fuerza que la imagen y la ficha estén una debajo de otra */
+    align-items: center;     /* Centra horizontalmente */
+    justify-content: start;
+    text-align: center;
 }
 
 .imagen-obra img {

@@ -3,7 +3,7 @@ from .models import Exposicion
 from .models import PremioDistincion
 from .models import Gif
 from .models import Trabajo
-from .models import AcercaDe, Statement
+from .models import AcercaDe, Statement, Serie
 
 class StatementForm(forms.ModelForm):
     class Meta:
@@ -80,3 +80,35 @@ class TrabajoForm(forms.ModelForm):
             'dimension': forms.TextInput(attrs={'class': 'form-control'}),
             'coleccion': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class SerieForm(forms.ModelForm):
+    trabajos = forms.ModelMultipleChoiceField(
+        queryset=Trabajo.objects.none(),  # será reemplazado en __init__
+        required=False,
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Serie
+        fields = ['nombre', 'anio', 'descripcion']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Trabajos sin serie asignada, o que ya pertenecen a esta serie (si se está editando)
+        trabajos_disponibles = Trabajo.objects.filter(serie__isnull=True)
+        if self.instance.pk:
+            trabajos_actuales = self.instance.trabajos.all()
+            trabajos_disponibles = trabajos_disponibles | trabajos_actuales
+
+        self.fields['trabajos'].queryset = trabajos_disponibles.distinct()
+
+        if self.instance.pk:
+            self.fields['trabajos'].initial = self.instance.trabajos.all()
+
+    def save(self, commit=True):
+        instance = super().save(commit)
+        if commit:
+            # Asignar los trabajos seleccionados
+            instance.trabajos.set(self.cleaned_data['trabajos'])
+        return instance

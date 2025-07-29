@@ -18,8 +18,8 @@ from PIL import Image
 import os
 from django.conf import settings
 from .forms import GifForm
-from .models import AcercaDe, Statement
-from .forms import AcercaDeForm, StatementForm
+from .models import AcercaDe, Statement, Serie
+from .forms import AcercaDeForm, StatementForm, SerieForm
 
 def editar_statement(request):
     statement = Statement.objects.last()
@@ -262,12 +262,39 @@ def exposiciones_json(request):
     })
 
 def trabajos_json(request):
-    trabajos = list(Trabajo.objects.all().order_by('-anio').values(
-        'id', 'nombre', 'anio', 'descripcion', 'dimension', 'coleccion'
-    ))
-    return JsonResponse({
-        "trabajos": trabajos
-    })
+    # Trabajos sin serie
+    trabajos = list(
+        Trabajo.objects.filter(serie__isnull=True)
+        .order_by('-anio')
+        .values('id', 'nombre', 'anio', 'descripcion', 'dimension')
+    )
+    for t in trabajos:
+        t['tipo'] = 0  # indicador de trabajo
+
+    # Series con sus trabajos
+    series = []
+    for serie in Serie.objects.all().order_by('-anio'):
+        trabajos_serie = list(
+            serie.trabajos.all()
+            .order_by('-nombre')
+            .values('id', 'nombre', 'anio', 'descripcion', 'dimension')
+        )
+        for t in trabajos_serie:
+            t['tipo'] = 0  # mantener consistencia si los recorres después
+
+        series.append({
+            'id': serie.id,
+            'nombre': serie.nombre,
+            'anio': serie.anio,
+            'descripcion': serie.descripcion,
+            'dimension': serie.dimension,
+            'tipo': 1,  # indicador de serie
+            'trabajos': trabajos_serie
+        })
+
+    # Combinamos ambos
+    data = trabajos + series
+    return JsonResponse({'items': data})
 
 def imagenes_tumb_json(request, trabajo_id):
     carpeta = os.path.join(settings.MEDIA_ROOT, str(trabajo_id))
@@ -328,3 +355,40 @@ def subir_gif(request):
     else:
         form = GifForm()
     return render(request, 'admin/subir_portada.html', {'form': form})
+
+
+def lista_series(request):
+    series = Serie.objects.all()
+    return render(request, 'series/lista_series.html', {'series': series})
+
+def crear_serie(request):
+    if request.method == 'POST':
+        form = SerieForm(request.POST)
+        if form.is_valid():
+            serie = form.save(commit=False)
+            serie.save()
+            serie.trabajos.set(form.cleaned_data['trabajos'])
+            return redirect('lista_series')
+    else:
+        form = SerieForm()
+    return render(request, 'series/crear_serie.html', {'form': form})
+
+def editar_serie(request, pk):
+    serie = get_object_or_404(Serie, pk=pk)
+    if request.method == 'POST':
+        form = SerieForm(request.POST, instance=serie)
+        if form.is_valid():
+            serie = form.save(commit=False)
+            serie.save()
+            serie.trabajos.set(form.cleaned_data['trabajos'])
+            return redirect('lista_series')
+    else:
+        form = SerieForm(instance=serie)
+    return render(request, 'series/editar_serie.html', {'form': form, 'serie': serie})
+
+def eliminar_serie(request, pk):
+    serie = get_object_or_404(Serie, pk=pk)
+    if request.method == 'POST':
+        serie.delete()
+        return redirect('lista_series')
+    return render(request, 'series/eliminar_serie.html', {'serie': serie})

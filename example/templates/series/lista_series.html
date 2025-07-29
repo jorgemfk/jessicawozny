@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Series</h2>
+  <a href="{% url 'crear_serie' %}" class="btn btn-primary mb-3">Agregar Nueva Serie</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Año</th>
+        <th>Trabajos Asociados</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for serie in series %}
+      <tr>
+        <td>{{ serie.nombre }}</td>
+        <td>{{ serie.anio }}</td>
+        <td>
+          {% for trabajo in serie.trabajo_set.all %}
+            <span class="badge bg-secondary">{{ trabajo.titulo }}</span>
+          {% empty %}
+            <em>No hay trabajos asociados</em>
+          {% endfor %}
+        </td>
+        <td>
+          <a href="{% url 'editar_serie' serie.pk %}" class="btn btn-sm btn-warning">Editar</a>
+          <a href="{% url 'eliminar_serie' serie.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

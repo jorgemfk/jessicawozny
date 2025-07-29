@@ -151,28 +151,24 @@ def cargar_exposiciones_individuales(apps, schema_editor):
 def load_initial_acercade(apps, schema_editor):
     AcercaDe = apps.get_model('example', 'AcercaDe')
     AcercaDe.objects.create(
-        acerca="Jessica Wozny nace en Langenfeld, Renania del Norte-Westfalia cerca de Colonia, Alemania,el día 28 de Febrero en  1978."
-                +"Estudió la licenciatura de Lingüística, Romanística y Filosofía en Heinrich Heine Universität en Düsseldorf 1998/99."
-                 ""
-                +"Estudió la licenciatura en Artes Plásticas en la Escuela Nacional de Pintura, Escultura y Grabado ¨La Esmeralda¨ en la Ciudad de México (1999-2002)"
-                +"Es co-fundadora junto con Luis Hampshire del proyecto curatorial Ediciones Plan B, 2004"
-                +"Es fundadora de Nullnummern Press, editorial de publicaciones de artista, 2013. "
-                +" Vive y trabaja desde 2003 en la Ciudad de Oaxaca""",
-        otros_proyectos="""Wozny cuenta con diversas publicaciones y catálogos de su trabajo y es fundadora/editora de “Nullnummern Press“, proyecto de auto-publicación de artistaublicaciones de iniciado en el 2013
+        acerca="""Jessica Wozny nace cerca de Colonia, Renania del Norte-Westfalia, Alemania, el 28 de Febrero en 1978. Estudió  lingüística, romanística y filosofía en la Heinrich Heine Universität, Düsseldorf, 1998/99.
+Estudió la licenciatura en Artes Plásticas en la Escuela Nacional de Pintura, Escultura y Grabado ¨La Esmeralda¨,  Ciudad de México, 1999-2002. 
+Es co-fundadora del proyecto curatorial Ediciones Plan B, 2004, junto con Luis Hampshire.  Edita Nullnummern Press, proyecto de auto-publicación, desde 2013.  
+Desde 2003 vive y trabaja en la Ciudad de Oaxaca.""",
+        otros_proyectos="""Wozny cuenta con diversas publicaciones y catálogos de su trabajo y es fundadora/ editora de “Nullnummern Press“, proyecto de auto-publicación de artistaublicaciones de iniciado en el 2013.
 Participa en el proyecto La costumbre de los vientos dentro de la plataforma de investigación de pedagogía de arte: Organización auto-gestiva interdisciplinaria (OAI México), fundada y organizada por los artistas y docentes Liliana Ramales y Jorge Sosa.
 ( https://www.oaimexico.com/la-costumbre-de-los-vientos )
-Wozny es creadora y hacedora de TULA, marca de muñecas-prototipo hechas de cerámica, trapo y up-cycling. ( https://instagram.com/tula_hechoamano )"""
+Wozny es creadora y hacedora de TULA, marca de muñecas-prototipo hechas de cerámica, trapo y up-cycling. ( https://instagram.com/tula_hechoamano )."""
 )
 
 def load_initial_statement(apps, schema_editor):
     Statement = apps.get_model('example', 'Statement')
     Statement.objects.create(
-        texto="""Jessica Wozny (Langenfeld, Renania del Norte-Westfalia, Alemania, 1978) es artista visual y editora. Estudió Lingüística, Romanística y Filosofía en la Universidad Heinrich Heine de Düsseldorf, y la Licenciatura en Artes Plásticas en la ENPEG “La Esmeralda”, en la Ciudad de México. Desde 2003 vive y trabaja en Oaxaca, México.
+        texto="""Jessica Wozny nace en Langenfeld, Renania del Norte-Westfalia, Alemania, 1978. Es artista visual y editora. Estudió lingüística, romanística y filosofía en la Universidad Heinrich Heine de Düsseldorf y la Licenciatura en Artes Plásticas en la ENPEG “La Esmeralda”, en la Ciudad de México. Desde 2003 vive y trabaja en Oaxaca, México.
         
-Es cofundadora del proyecto curatorial Ediciones Plan B (2004) y fundadora de Nullnummern Press (2013), editorial dedicada a publicaciones de artista y procesos de autoedición. Su obra ha sido presentada en exposiciones individuales y colectivas en museos, ferias y espacios independientes en México, Estados Unidos, Alemania, Canadá, Francia y Japón.
+Wozny es cofundadora del proyecto curatorial Ediciones Plan B en 2004. Inició  Nullnummern Press, editorial de auto-publicación, en 2013.  Su obra ha sido presentada en exposiciones individuales y colectivas en museos, ferias y espacios independientes en México, Estados Unidos, Alemania, Canadá, Francia y Japón.
 
-Ha sido miembro del Sistema Nacional de Creadores de Arte (2021–2024) y becaria del programa Arte Actual Bancomer–MACG (2012–2014). En 2014 fue seleccionada como Artista en Residencia en la Chinati Foundation en Marfa, Texas, y en 2013 participó en una residencia de investigación artística en Ciudad del Carmen, 
-Campeche, como parte del Festival de Artes Visuales de Campeche (FAVCA). En 2007 recibió la beca Jóvenes Creadores FOESCA en Oaxaca, y en 2006 obtuvo el premio de adquisición en la III Bienal Nacional de Artes Visuales de Yucatán."""
+Ha sido miembro del Sistema Nacional de Creadores de Arte, 2021–2024 y becaria del programa Arte Actual Bancomer–MACG , 2012–2014. En 2014 obtuvo la Residencia de Artista de la Fundación Chinati en Marfa, Texas. Dentro del marco de FAVCA,  Festival de Artes Visuales de Campeche 2013 participó en una residencia de investigación  artística en Ciudad del Carmen, Campeche. En 2007 recibió la beca Jóvenes Creadores FOESCA en Oaxaca, y en 2006 obtuvo el premio de adquisición en la III Bienal Nacional de Artes Visuales de Yucatán."""
 
 )
 
