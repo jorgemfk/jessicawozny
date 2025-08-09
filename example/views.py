@@ -277,11 +277,10 @@ def trabajos_json(request):
         trabajos_serie = list(
             serie.trabajos.all()
             .order_by('-nombre')
-            .values('id', 'nombre', 'anio', 'descripcion', 'dimension')
+            .values('id', 'nombre', 'anio', 'descripcion', 'dimension','coleccion')
         )
         for t in trabajos_serie:
             t['tipo'] = 0  # mantener consistencia si los recorres después
-            t['coleccion'] = ' '
 
         series.append({
             'id': serie.id,

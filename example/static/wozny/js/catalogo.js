@@ -9,7 +9,13 @@ function cargarLista(orden) {
     let obrasOrdenadas = [...obras];
 
     if (orden === "cronologico") {
-        obrasOrdenadas.sort((a, b) => b.anio - a.anio);
+        obrasOrdenadas.sort((a, b) => {
+        if (b.anio !== a.anio) {
+            return b.anio - a.anio;  // Orden descendente por año
+        } else {
+            return a.nombre.localeCompare(b.nombre); // Orden ascendente por nombre si el año es igual
+        }
+    });
     } else {
         obrasOrdenadas.sort((a, b) => a.nombre.localeCompare(b.nombre));
     }
@@ -96,7 +102,7 @@ function mostrarObra(obra) {
 
     if (obra.tipo === 0) {
         // Es un trabajo individual
-        imagenPrincipal.src = `/media/${obra.id}/${obra.id}_1_1.png`;
+        imagenPrincipal.src = cambiarImagenConSpinner(`/media/${obra.id}/${obra.id}_1_2.png`);
         fetch(`/cata/${obra.id}/imagenes-tumb-json/`)
             .then(response => response.json())
             .then(data => {
@@ -121,7 +127,7 @@ function mostrarObra(obra) {
     } else if (obra.tipo === 1 && obra.trabajos.length > 0) {
         // Es una serie, usamos el primer trabajo
         const primerTrabajo = obra.trabajos[0];
-        imagenPrincipal.src = `/media/${primerTrabajo.id}/${primerTrabajo.id}_1_1.png`;
+        imagenPrincipal.src = cambiarImagenConSpinner(`/media/${primerTrabajo.id}/${primerTrabajo.id}_1_2.png`);
         cargarFicha(primerTrabajo);
         // Cargar thumbnails de todos los trabajos de la serie
         obra.trabajos.forEach(trabajo => {
