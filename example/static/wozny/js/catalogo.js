@@ -50,10 +50,36 @@ function cargarLista(orden) {
     mostrarObra(obrasOrdenadas[0]);
 }
 
+function cambiarImagenConSpinner(url) {
+  const spinner = document.getElementById("spinner");
+  const imagenPrincipal = document.getElementById("imagen");
+
+  spinner.style.display = "flex"; // Mostrar spinner
+
+  // Crear una nueva imagen para escuchar eventos
+  const nuevaImagen = new Image();
+  nuevaImagen.src = url.replace('_2.png', '_1.png');
+
+  // Cuando la imagen termine de cargar, cambiar src y ocultar spinner
+  nuevaImagen.onload = () => {
+    imagenPrincipal.src = nuevaImagen.src;
+    spinner.style.display = "none"; // Ocultar spinner
+  };
+
+  // Si hay error en cargar la imagen, también ocultar spinner para no bloquear
+  nuevaImagen.onerror = () => {
+    spinner.style.display = "none";
+    console.error("Error cargando imagen", url);
+  };
+}
+
+
 function cargarFicha(obra) {
-    // Actualizar ficha técnica
-   const ficha = document.getElementById("ficha-tecnica");
-   ficha.textContent = `${obra.nombre || ''}, ${obra.anio || ''}, ${obra.descripcion || ''}, ${obra.dimension || ''}`;
+    document.getElementById("titulo-obra").textContent = obra.nombre;
+    document.getElementById("descripcion").textContent = obra.descripcion;
+    document.getElementById("anio").textContent = obra.anio;
+    document.getElementById("dimension").textContent = obra.dimension;
+    document.getElementById("coleccion").textContent = obra.coleccion || '';
 
 }
 function mostrarObra(obra) {
@@ -81,13 +107,13 @@ function mostrarObra(obra) {
                     img.style.width = '40px';
                     img.style.cursor = 'pointer';
                     img.onclick = () => {
-                        imagenPrincipal.src = url.replace('_2.png', '_1.png');
+                        imagenPrincipal.src = cambiarImagenConSpinner(url);
 
                     };
                     thumbnailsContainer.appendChild(img);
                 });
                 if (data.imagenes.length > 0) {
-                    imagenPrincipal.src = data.imagenes[0].replace('_2.png', '_1.png');
+                    imagenPrincipal.src = cambiarImagenConSpinner(data.imagenes[0]);
                 }
             })
             .catch(error => console.error('Error cargando imágenes:', error));
@@ -96,7 +122,7 @@ function mostrarObra(obra) {
         // Es una serie, usamos el primer trabajo
         const primerTrabajo = obra.trabajos[0];
         imagenPrincipal.src = `/media/${primerTrabajo.id}/${primerTrabajo.id}_1_1.png`;
-
+        cargarFicha(primerTrabajo);
         // Cargar thumbnails de todos los trabajos de la serie
         obra.trabajos.forEach(trabajo => {
             fetch(`/cata/${trabajo.id}/imagenes-tumb-json/`)
@@ -109,7 +135,7 @@ function mostrarObra(obra) {
                         img.style.width = '40px';
                         img.style.cursor = 'pointer';
                         img.onclick = () => {
-                            imagenPrincipal.src = url.replace('_2.png', '_1.png');
+                            imagenPrincipal.src = cambiarImagenConSpinner(url);
                             cargarFicha(trabajo);
                         };
                         thumbnailsContainer.appendChild(img);
@@ -137,10 +163,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 obras.push(...data.items);
 
                 console.log("trabajos:", obras);
-                const spinner = document.getElementById("spinner");
-                spinner.style.display = "none";
                 cargarLista("cronologico");
 
             })
-            .catch(error => console.error("Error al cargar trabajos:", error));
+            .catch(error => console.error("Error al cargar trabajos:", error))
+            .finally(() => {
+               // Ocultar el spinner pase lo que pase
+               const spinner = document.getElementById("spinner");
+               spinner.style.display = "none";
+            });
         });

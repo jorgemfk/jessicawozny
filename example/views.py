@@ -67,7 +67,7 @@ def editar_acerca_de(request):
 
 # Vista para listar todos los trabajos
 def lista_trabajos(request):
-    trabajos = Trabajo.objects.all()
+    trabajos = Trabajo.objects.all().order_by('nombre')
     return render(request, 'trabajos/lista.html', {'trabajos': trabajos})
 
 # Vista para crear un nuevo trabajo
@@ -266,7 +266,7 @@ def trabajos_json(request):
     trabajos = list(
         Trabajo.objects.filter(serie__isnull=True)
         .order_by('-anio')
-        .values('id', 'nombre', 'anio', 'descripcion', 'dimension')
+        .values('id', 'nombre', 'anio', 'descripcion', 'dimension','coleccion')
     )
     for t in trabajos:
         t['tipo'] = 0  # indicador de trabajo
@@ -281,6 +281,7 @@ def trabajos_json(request):
         )
         for t in trabajos_serie:
             t['tipo'] = 0  # mantener consistencia si los recorres después
+            t['coleccion'] = ' '
 
         series.append({
             'id': serie.id,
@@ -358,7 +359,7 @@ def subir_gif(request):
 
 
 def lista_series(request):
-    series = Serie.objects.all()
+    series = Serie.objects.all().order_by('nombre')
     return render(request, 'series/lista_series.html', {'series': series})
 
 def crear_serie(request):

@@ -10,86 +10,87 @@
 <body>
     {% include 'wozny/menu.html' %}
 
-    <div class="container">
-    <div id="spinner" class="d-flex justify-content-center align-items-center position-fixed"
-     style="top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(255, 255, 255, 0.4); z-index: 1050;">
+        <div class="container">
+        <div id="spinner"
+     class="justify-content-center align-items-center position-fixed"
+     style="top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(252, 250, 250, 0.4); z-index: 1050; display: flex;">
   <div class="spinner-border text-light" role="status">
     <span class="visually-hidden">Cargando...</span>
   </div>
 </div>
 
-        <!-- Columna 1: Lista de Obras -->
-        <div class="columna lista-obras">
-            <div class="ordenamiento">
-                <span id="orden-alfabetico" class="activo" onclick="ordenar('alfabetico')">Alfabético</span> |
-                <span id="orden-cronologico" onclick="ordenar('cronologico')">Cronológico</span>
+            <!-- Columna 1: Lista de Obras -->
+            <div class="columna lista-obras">
+                <div class="ordenamiento">
+                    <span id="orden-alfabetico" class="activo" onclick="ordenar('alfabetico')">Alfabético</span> |
+                    <span id="orden-cronologico" onclick="ordenar('cronologico')">Cronológico</span>
+                </div>
+                <ul id="lista">
+                    <!-- Se llenará dinámicamente con JavaScript -->
+                </ul>
             </div>
-            <ul id="lista">
-                <!-- Se llenará dinámicamente con JavaScript -->
-            </ul>
-        </div>
 
-        <!-- Columna 2: Imagen de la Obra -->
-        <div class="columna imagen-obra">
-            <img id="imagen" style="cursor: pointer;" class="main-image" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
-                <p id="ficha-tecnica" style="
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 300;
-        font-size: 0.7rem;">
-        </p>
-        </div>
-
-        <!-- Columna 3: Ficha Técnica -->
-        <div class="columna ficha-tecnica">
-            <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo"></span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
-            <p id="descripcion"></p>
-            <p id="coleccion"></p>
-            <p><span id="dimension"  style="font-style: italic;"></span></p>
-            <div class="thumbnails">
+            <!-- Columna 2: Imagen de la Obra -->
+            <div class="columna imagen-obra">
+                <img id="imagen" style="cursor: pointer;" class="main-image" src="{% static 'wozny/img/1.png' %}" alt="Obra seleccionada">
+                    <p id="ficha-tecnica" style="
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-size: 0.7rem;">
+            </p>
             </div>
+
+            <!-- Columna 3: Ficha Técnica -->
+            <div class="columna ficha-tecnica">
+                <div class="ficha-tecnica-div"><p><span id="titulo-obra" class="ficha-tecnica-titulo"></span> <span id="anio" class="ficha-tecnica-titulo" style="font-style: italic;"></span></p></div>
+                <p id="descripcion"></p>
+                <p><span id="dimension"  style="font-style: italic;"></span></p>
+                <p id="coleccion"></p>
+                <div class="thumbnails">
+                </div>
+            </div>
+
+        </div>
+        <!-- Modal para imagen en pantalla completa -->
+        <!-- Modal para imagen grande -->
+        <div id="imageModal" class="imgmodal" onclick="closeImgModal()">
+            <span class="imgclose" onclick="closeImgModal()">&times;</span>
+            <img class="imgmodal-content" id="modalImage">
         </div>
 
-    </div>
-    <!-- Modal para imagen en pantalla completa -->
-    <!-- Modal para imagen grande -->
-    <div id="imageModal" class="imgmodal" onclick="closeImgModal()">
-        <span class="imgclose" onclick="closeImgModal()">&times;</span>
-        <img class="imgmodal-content" id="modalImage">
-    </div>
+        <script src="{% static 'wozny/js/catalogo.js' %}"></script>
+        <script>
 
-    <script src="{% static 'wozny/js/catalogo.js' %}"></script>
-    <script>
+            const images = [
+                "{% static 'wozny/img/1.png' %}",
+                "{% static 'wozny/img/4.png' %}",
+            "{% static 'wozny/img/3.png' %}"
+            ];
 
-        const images = [
-            "{% static 'wozny/img/1.png' %}",
-            "{% static 'wozny/img/4.png' %}",
-        "{% static 'wozny/img/3.png' %}"
-        ];
-
-        function changeImage(index) {
-            document.getElementById("imagen").src = images[index];
-        }
-
-        // Mostrar imagen en el modal
-        document.getElementById("imagen").addEventListener("click", function() {
-            document.getElementById("modalImage").src = this.src;
-            document.getElementById("imageModal").style.display = "flex";
-        });
-
-        // Cerrar el modal
-        function closeImgModal() {
-            document.getElementById("imageModal").style.display = "none";
-        }
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                closeImgModal();
+            function changeImage(index) {
+                document.getElementById("imagen").src = images[index];
             }
-        });
-    </script>
-    <script>
-        window.onload = function() {
-    document.getElementById("catalogo").style.textDecoration = "underline";
-    };
-    </script>
-</body>
-</html>
+
+            // Mostrar imagen en el modal
+            document.getElementById("imagen").addEventListener("click", function() {
+                document.getElementById("modalImage").src = this.src;
+                document.getElementById("imageModal").style.display = "flex";
+            });
+
+            // Cerrar el modal
+            function closeImgModal() {
+                document.getElementById("imageModal").style.display = "none";
+            }
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeImgModal();
+                }
+            });
+        </script>
+        <script>
+            window.onload = function() {
+        document.getElementById("catalogo").style.textDecoration = "underline";
+        };
+        </script>
+    </body>
+    </html>

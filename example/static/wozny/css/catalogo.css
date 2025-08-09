@@ -76,6 +76,7 @@ body {
 /* Ficha técnica */
 .ficha-tecnica {
     font-size: 0.8rem;
+    text-align: justify;
 }
 
 .ficha-tecnica-titulo {
