@@ -135,7 +135,9 @@ if not DEBUG:
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/adm/'  # después de iniciar sesión
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
