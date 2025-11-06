@@ -20,7 +20,9 @@ from django.conf import settings
 from .forms import GifForm
 from .models import AcercaDe, Statement, Serie
 from .forms import AcercaDeForm, StatementForm, SerieForm
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def editar_statement(request):
     statement = Statement.objects.last()
     if request.method == 'POST':
@@ -71,6 +73,7 @@ def lista_trabajos(request):
     return render(request, 'trabajos/lista.html', {'trabajos': trabajos})
 
 # Vista para crear un nuevo trabajo
+@login_required
 def crear_trabajo(request):
     if request.method == 'POST':
         form = TrabajoForm(request.POST, request.FILES)
@@ -106,6 +109,7 @@ def crear_trabajo(request):
     return render(request, 'trabajos/crear.html', {'form': form})
 
 # Vista para editar un trabajo existente
+@login_required
 def editar_trabajo(request, pk):
     trabajo = get_object_or_404(Trabajo, pk=pk)
     if request.method == 'POST':
@@ -140,6 +144,7 @@ def editar_trabajo(request, pk):
 
     return render(request, 'trabajos/editar.html', {'form': form, 'trabajo': trabajo, 'imagenes': imagenes})
 # API para eliminar imagen individual
+@login_required
 def eliminar_imagen(request):
     if request.method == 'POST':
         image_path = request.POST.get('path')
@@ -154,6 +159,7 @@ def eliminar_imagen(request):
     return JsonResponse({'status': 'error'}, status=400)
 
 # Vista para eliminar un trabajo
+@login_required
 def eliminar_trabajo(request, pk):
     trabajo = get_object_or_404(Trabajo, pk=pk)
     if request.method == 'POST':
@@ -208,6 +214,7 @@ def lista_exposiciones(request):
     exposiciones = Exposicion.objects.all().order_by('tipo', '-año')
     return render(request, 'exposiciones/lista.html', {'exposiciones': exposiciones})
 
+@login_required
 def agregar_exposicion(request):
     if request.method == 'POST':
         form = ExposicionForm(request.POST)
@@ -218,6 +225,7 @@ def agregar_exposicion(request):
         form = ExposicionForm()
     return render(request, 'exposiciones/form.html', {'form': form, 'titulo': 'Agregar Exposición'})
 
+@login_required
 def editar_exposicion(request, id):
     exposicion = get_object_or_404(Exposicion, id=id)
     if request.method == 'POST':
@@ -229,6 +237,7 @@ def editar_exposicion(request, id):
         form = ExposicionForm(instance=exposicion)
     return render(request, 'exposiciones/form.html', {'form': form, 'titulo': 'Editar Exposición'})
 
+@login_required
 def eliminar_exposicion(request, id):
     exposicion = get_object_or_404(Exposicion, id=id)
     if request.method == 'POST':
@@ -314,6 +323,7 @@ def lista_premios(request):
     premios = PremioDistincion.objects.all().order_by('-año')
     return render(request, 'premios/lista.html', {'premios': premios})
 
+@login_required
 def agregar_premio(request):
     if request.method == 'POST':
         form = PremioDistincionForm(request.POST)
@@ -324,6 +334,7 @@ def agregar_premio(request):
         form = PremioDistincionForm()
     return render(request, 'premios/formulario.html', {'form': form})
 
+@login_required
 def editar_premio(request, premio_id):
     premio = get_object_or_404(PremioDistincion, id=premio_id)
     if request.method == 'POST':
@@ -335,6 +346,7 @@ def editar_premio(request, premio_id):
         form = PremioDistincionForm(instance=premio)
     return render(request, 'premios/formulario.html', {'form': form})
 
+@login_required
 def eliminar_premio(request, premio_id):
     premio = get_object_or_404(PremioDistincion, id=premio_id)
     if request.method == 'POST':
@@ -342,9 +354,11 @@ def eliminar_premio(request, premio_id):
         return redirect('lista_premios')
     return render(request, 'premios/confirmar_eliminar.html', {'premio': premio})
 
+@login_required
 def admin_panel(request):
     return render(request, 'admin/admin_panel.html')
 
+@login_required
 def subir_gif(request):
     if request.method == 'POST':
         Gif.objects.all().delete()  # Elimina todos los anteriores si solo debe haber uno
@@ -361,6 +375,7 @@ def lista_series(request):
     series = Serie.objects.all().order_by('nombre')
     return render(request, 'series/lista_series.html', {'series': series})
 
+@login_required
 def crear_serie(request):
     if request.method == 'POST':
         form = SerieForm(request.POST)
@@ -373,6 +388,7 @@ def crear_serie(request):
         form = SerieForm()
     return render(request, 'series/crear_serie.html', {'form': form})
 
+@login_required
 def editar_serie(request, pk):
     serie = get_object_or_404(Serie, pk=pk)
     if request.method == 'POST':
@@ -386,6 +402,7 @@ def editar_serie(request, pk):
         form = SerieForm(instance=serie)
     return render(request, 'series/editar_serie.html', {'form': form, 'serie': serie})
 
+@login_required
 def eliminar_serie(request, pk):
     serie = get_object_or_404(Serie, pk=pk)
     if request.method == 'POST':

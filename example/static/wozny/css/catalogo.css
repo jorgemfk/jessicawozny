@@ -110,7 +110,7 @@ body {
     width: 300px;
     height: auto;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 0px;
     transition: transform 0.3s;
 }
 

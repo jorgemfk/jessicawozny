@@ -22,6 +22,7 @@ from example.views import contacto
 from example.views import lista_premios, agregar_premio, editar_premio, eliminar_premio, admin_panel, subir_gif
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import  include
 
 urlpatterns = [
     path("panela/", admin.site.urls),
@@ -57,4 +58,5 @@ urlpatterns = [
     path('series/nueva/', views.crear_serie, name='crear_serie'),
     path('series/<int:pk>/editar/', views.editar_serie, name='editar_serie'),
     path('series/<int:pk>/eliminar/', views.eliminar_serie, name='eliminar_serie'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

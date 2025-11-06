@@ -91,7 +91,7 @@ function cargarFicha(obra) {
 function mostrarObra(obra) {
     const imagenPrincipal = document.getElementById("imagen");
     const thumbnailsContainer = document.querySelector('.thumbnails');
-
+    document.getElementById("titulo-serie").textContent = obra.nombre;
     document.getElementById("titulo-obra").textContent = obra.nombre;
     document.getElementById("descripcion").textContent = obra.descripcion;
     document.getElementById("anio").textContent = obra.anio;
@@ -102,6 +102,8 @@ function mostrarObra(obra) {
 
     if (obra.tipo === 0) {
         // Es un trabajo individual
+        document.getElementById("titulo-serie").textContent = '';
+        document.getElementById("titulo-serie").style.display = "none";
         imagenPrincipal.src = cambiarImagenConSpinner(`/media/${obra.id}/${obra.id}_1_2.png`);
         fetch(`/cata/${obra.id}/imagenes-tumb-json/`)
             .then(response => response.json())
@@ -126,6 +128,7 @@ function mostrarObra(obra) {
 
     } else if (obra.tipo === 1 && obra.trabajos.length > 0) {
         // Es una serie, usamos el primer trabajo
+        document.getElementById("titulo-serie").style.display = "flex";
         const primerTrabajo = obra.trabajos[0];
         imagenPrincipal.src = cambiarImagenConSpinner(`/media/${primerTrabajo.id}/${primerTrabajo.id}_1_2.png`);
         cargarFicha(primerTrabajo);
